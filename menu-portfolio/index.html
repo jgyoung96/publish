@@ -299,22 +299,22 @@
 @media (max-width:1023px){
   /* ── 휴대폰 KV: 화면 높이를 꽉 채우고, 위→아래로 읽히게 다시 배치 ── */
   .kv-wrap{align-items:stretch}
-  .kv{aspect-ratio:auto;height:clamp(calc(min(100cqw, 600px) * 1.66), calc(100svh - 64px), calc(min(100cqw, 600px) * 1.8));min-height:0;max-height:none;--t0:max(104px, 13%);--lh:calc(63 * var(--u));--t3:calc(var(--t0) + var(--lh) * 2.25 + 100px)}   /* 휴대폰 KV: 화면 높이 - 64px (다음 섹션이 살짝 보임) · 폭의 1.7~2배 안에서 · 위 글자 묶음은 위에서, 아래 묶음은 아래에서 붙여 겹치지 않게 */   /* 높이가 폭의 2.05배보다 작아지지 않게: 낮은 화면에서도 글자 줄이 겹치지 않음 */
+  .kv{aspect-ratio:auto;height:100svh;min-height:calc(min(100cqw, 600px) * 2.05);max-height:none}   /* 높이가 폭의 2.05배보다 작아지지 않게: 낮은 화면에서도 글자 줄이 겹치지 않음 */
   .kv .intro{left:20px;top:24px;width:72%;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.55}
   .kv .intro .m-br{display:inline}
   .kv .side{right:14px;top:24px;font-size:clamp(12px, calc(14 * var(--u)), 15px);z-index:6}
-  .kv .big{font-size:calc(72 * var(--u));letter-spacing:-.06em}
-  .kv .b1{left:20px;top:var(--t0)}.kv .b2{left:20px;top:calc(var(--t0) + var(--lh))}
-  .kv .la{left:20px;top:calc(var(--t0) + var(--lh) * 2.25);font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}
-  .kv .b3{right:20px;top:var(--t3)}.kv .b4{right:20px;top:calc(var(--t3) + var(--lh))}   /* 위 목록 바로 아래로 붙여 올림 */
-  .kv .lb{right:20px;top:auto;top:calc(var(--t3) + var(--lh) * 2.2);bottom:auto;width:auto;white-space:nowrap;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}   /* 이름 위로 일정 간격 */
-  .kv .oa{left:auto;right:-15%;top:calc(var(--t0) + var(--lh) * .85);width:54%}
-  .kv .ob{left:-10%;top:calc(var(--t3) - 30px);width:60%}
-  .kv .stamp{left:auto;right:7%;top:calc(var(--t0) + var(--lh) * 1.15);width:clamp(70px,21%,124px);z-index:5}   /* 크루아상 윗부분에 반쯤 걸치게 */
+  .kv .big{font-size:calc(80 * var(--u));letter-spacing:-.06em}
+  .kv .b1{left:20px;top:15%}.kv .b2{left:20px;top:24%}
+  .kv .la{left:20px;top:36%;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}
+  .kv .b3{right:20px;top:50%}.kv .b4{right:20px;top:59%}
+  .kv .lb{right:20px;top:auto;bottom:165px;width:auto;white-space:nowrap;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}   /* 이름 위로 일정 간격 */
+  .kv .oa{left:auto;right:-15%;top:22.5%;width:54%}
+  .kv .ob{left:-10%;top:47%;width:60%}
+  .kv .stamp{left:auto;right:7%;top:25%;width:clamp(70px,21%,124px);z-index:5}   /* 크루아상 윗부분에 반쯤 걸치게 */
   .kv .stamp b{font-size:18.5cqw}    /* 휴대폰: 가운데 글자 조금 크게 */
-  .kv .logo{left:20px;bottom:84px}
+  .kv .logo{left:20px;bottom:88px}
   .kv .logo h1{font-size:clamp(26px, calc(31 * var(--u)), 36px)}
-  .kv .kv-contact{left:20px;right:auto;bottom:24px;grid-template-columns:auto;gap:0;text-align:left;font-size:clamp(11px, calc(11 * var(--u)), 13px)}
+  .kv .kv-contact{left:20px;right:auto;bottom:44px;grid-template-columns:auto;gap:0;text-align:left;font-size:clamp(11px, calc(11 * var(--u)), 13px)}
   .kv .kv-contact span:nth-child(n+3){display:none}   /* 휴대폰은 이메일 · 전화만 */
   .kv .cue{left:auto;right:16px;bottom:24px;transform:none}
   .kv .cue span{font-size:11px}   /* 휴대폰 · 태블릿: KV 글자 비율과 상관없이 작게 고정 */
