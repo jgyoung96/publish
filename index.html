@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vertical · 작업 모음</title>
+<script>
+  try { var t = localStorage.getItem('jgy-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root {
+    --bg: #ffffff; --card: #ffffff; --card-hover: #fafafa;
+    --ink: #0a0a0a; --sub: #666666; --faint: #8f8f8f;
+    --line: #eaeaea; --line-strong: #d4d4d4; --thumb: #f4f4f4;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000; --card: #0a0a0a; --card-hover: #111111;
+      --ink: #ededed; --sub: #a1a1a1; --faint: #707070;
+      --line: #1f1f1f; --line-strong: #2e2e2e; --thumb: #141414;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000; --card: #0a0a0a; --card-hover: #111111;
+    --ink: #ededed; --sub: #a1a1a1; --faint: #707070;
+    --line: #1f1f1f; --line-strong: #2e2e2e; --thumb: #141414;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased; word-break: keep-all;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 64px 32px 96px; }
+
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+  .head h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .head p { margin-top: 12px; font-size: 15px; color: var(--sub); }
+  .theme {
+    height: 36px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 2px;
+    background: var(--card); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .theme:hover { background: var(--card-hover); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  .card { display: flex; flex-direction: column; background: var(--card); transition: background .15s ease; }
+  .card:hover { background: var(--card-hover); }
+  .card__thumb { aspect-ratio: 16 / 10; background: var(--thumb); overflow: hidden; border-bottom: 1px solid var(--line); }
+  .card__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+  .card__thumb.contain img { object-fit: contain; padding: 24px; }
+  .card:hover .card__thumb img { transform: scale(1.03); }
+  .card__body { padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card__title { font-size: 17px; font-weight: 600; }
+  .card__desc { font-size: 14px; color: var(--sub); line-height: 1.5; }
+  .card__meta { margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; color: var(--sub); border: 1px solid var(--line-strong); border-radius: 2px; padding: 2px 8px; }
+  .date { font-size: 12px; color: var(--faint); margin-left: auto; align-self: center; }
+
+  .foot { margin-top: 32px; font-size: 13px; color: var(--faint); }
+
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) {
+    .wrap { padding: 40px 16px 64px; }
+    .head { flex-direction: column; align-items: flex-start; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div>
+      <h1>Vertical</h1>
+      <p>웹 퍼블리싱 작업 모음 · 카드를 누르면 사이트가 열려요</p>
+    </div>
+    <button class="theme" id="theme" type="button">테마 전환</button>
+  </header>
+
+  <main class="grid">
+    <a class="card" href="./sungsimdang/index.html">
+      <div class="card__thumb contain"><img src="./sungsimdang/img/cha/main_cha_01.png" alt="" loading="lazy"></div>
+      <div class="card__body">
+        <h2 class="card__title">성심당 캐릭터 웹사이트</h2>
+        <p class="card__desc">캐릭터를 활용한 브랜드 웹사이트</p>
+        <div class="card__meta"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span><span class="date">2020.12</span></div>
+      </div>
+    </a>
+    <a class="card" href="./lg/index.html">
+      <div class="card__thumb"><img src="./lg/assets/img/hero-bg.jpg" alt="" loading="lazy"></div>
+      <div class="card__body">
+        <h2 class="card__title">LG 반응형 웹사이트</h2>
+        <p class="card__desc">두 번째 반응형 웹사이트 · 포트폴리오 상세 페이지 포함</p>
+        <div class="card__meta"><span class="tag">반응형</span><span class="tag">Bootstrap</span><span class="date">2020.12</span></div>
+      </div>
+    </a>
+    <a class="card" href="./pixar/index.html">
+      <div class="card__thumb"><img src="./pixar/img/carousel_01.jpg" alt="" loading="lazy"></div>
+      <div class="card__body">
+        <h2 class="card__title">PIXAR 반응형 웹사이트</h2>
+        <p class="card__desc">부트스트랩 4로 구현한 반응형 웹사이트</p>
+        <div class="card__meta"><span class="tag">반응형</span><span class="tag">Bootstrap 4</span><span class="date">2020.12</span></div>
+      </div>
+    </a>
+  </main>
+
+  <p class="foot">github.com/jgyoung96</p>
+</div>
+<script>
+  document.getElementById('theme').addEventListener('click', function () {
+    var root = document.documentElement;
+    var cur = root.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('jgy-theme', next); } catch (e) {}
+  });
+</script>
+</body>
+</html>
