@@ -1,0 +1,410 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>메뉴 상세 · 메뉴 개발 포트폴리오</title>
+<meta name="description" content="제과 · 음료 메뉴 개발자 민지혜의 메뉴 개발 사례 상세 — 기획 배경, 맛 설계, 개발 과정과 성과.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="base.css?v=45">
+<style>
+/* 상세 페이지 — 메인과 같은 디자인 언어: 흰 바탕 · Inter 큰 글자 · 섹션 머리선 · 포인트 컬러
+   글자 크기는 모두 시안 px × var(--u) (PC 1440 · 모바일 390 기준, base.css 참고) */
+
+/* ── 히어로: 큰 영문 제목 + 스튜디오 사진 · 재료 주석 ── */
+.d-hero{padding-top:calc(96 * var(--u))}
+/* 상단 줄: 왼쪽 뒤로가기 · 오른쪽 브레드크럼 */
+.d-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:calc(64 * var(--u))}
+.back{display:inline-flex;align-items:center;gap:8px;padding:9px 18px 9px 13px;border:1px solid var(--line);border-radius:999px;font-size:max(13px, calc(14 * var(--u)));font-weight:600;color:var(--fg);background:var(--bg);transition:border-color .2s,background .2s}
+.back svg{width:16px;height:16px;flex:none;transition:transform .2s var(--ease)}
+.back:hover{border-color:var(--fg)}
+.back:hover svg{transform:translateX(-3px)}
+.back:focus-visible{outline:2px solid var(--point-strong);outline-offset:2px}
+.d-crumb{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px 14px;font-family:var(--mono);font-size:max(12px, calc(13 * var(--u)));color:var(--sub)}
+.d-crumb a{color:var(--sub);text-decoration:underline;text-underline-offset:3px}
+.d-crumb a:hover{color:var(--fg)}
+.d-crumb .sep{width:1px;height:12px;background:var(--line)}
+.d-title{margin:0;font-family:var(--sans);font-weight:500;font-size:max(44px, calc(112 * var(--u)));line-height:.92;letter-spacing:-.065em;text-transform:lowercase;color:#111}
+.d-title .w{display:inline-block}
+.d-sub{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-top:calc(24 * var(--u))}
+.d-sub b{font-size:max(20px, calc(28 * var(--u)));font-weight:800;letter-spacing:-.04em}
+.d-sub span{font-size:max(15px, calc(18 * var(--u)));color:var(--sub);letter-spacing:-.02em}
+/* 사진 무대 */
+.stage{position:relative;margin-top:calc(48 * var(--u));aspect-ratio:2/1;background:var(--studio);overflow:hidden;isolation:isolate}
+.stage .photo{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);aspect-ratio:4/5;-webkit-mask-image:radial-gradient(closest-side,#000 74%,transparent 100%);mask-image:radial-gradient(closest-side,#000 74%,transparent 100%)}
+.stage .photo img{display:block;width:100%;height:100%;object-fit:cover}
+.stage .plate{position:absolute;left:50%;top:60%;width:40%;aspect-ratio:3/1;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(#f7f8fa,#d9dde3)}
+.stage .food{position:absolute;left:50%;top:50%;width:24%;aspect-ratio:1.5/1;transform:translate(-50%,-50%);border-radius:45% 50% 38% 42%;background:radial-gradient(circle at 35% 30%,var(--t2),var(--t1) 78%)}
+.stage .quote{position:absolute;left:calc(40 * var(--u));top:calc(36 * var(--u));max-width:32%;z-index:3}
+.stage .quote b{display:block;font-size:max(15px, calc(22 * var(--u)));font-weight:800;letter-spacing:-.03em;line-height:1.35;color:var(--navy)}
+.stage .quote p{margin-top:8px;font-size:max(13px, calc(14 * var(--u)));line-height:1.6;color:#454b56}
+.stage .num{position:absolute;right:calc(40 * var(--u));bottom:calc(28 * var(--u));font-family:var(--mono);font-size:max(12px, calc(13 * var(--u)));color:#454b56;z-index:3}
+/* 재료 주석: 이름 + 가는 세로선 */
+/* 재료 주석: 선 끝은 사진 속 재료 위치(사진 기준 %), 위 2개는 세로선 · 아래 2개는 가로선 */
+.stage{--x0:30%;--pw:.4}   /* 사진 너비 = 무대 높이 x 0.8 → 2:1 무대에서 40% */
+.call{position:absolute;left:calc(var(--x0) + var(--px) * var(--pw) * 1%);top:calc(var(--py) * 1%);width:0;height:0;z-index:2;--len:calc(var(--h) * var(--u))}
+.call i{position:absolute;background:var(--navy);transition:transform .6s var(--ease) .2s}
+.call b{position:absolute;font-size:max(13px, calc(15 * var(--u)));font-weight:600;color:var(--navy);white-space:nowrap;line-height:1;opacity:0;transition:opacity .4s .6s}
+.call.up i{left:-.5px;bottom:0;width:1px;height:var(--len);transform-origin:bottom;transform:scaleY(0)}
+.call.up b{left:-2px;bottom:calc(var(--len) + 10px)}
+.call.upl i{left:-.5px;bottom:0;width:1px;height:var(--len);transform-origin:bottom;transform:scaleY(0)}
+.call.upl b{right:-2px;bottom:calc(var(--len) + 10px)}   /* 위로 올리되 글자는 선 왼쪽 */
+.call.l i{right:0;top:-.5px;height:1px;width:var(--len);transform-origin:right;transform:scaleX(0)}
+.call.l b{right:calc(var(--len) + 10px);top:0;transform:translateY(-50%)}
+.call.r i{left:0;top:-.5px;height:1px;width:var(--len);transform-origin:left;transform:scaleX(0)}
+.call.r b{left:calc(var(--len) + 10px);top:0;transform:translateY(-50%)}
+.ready .call i{transform:none}
+.ready .call b{opacity:1}
+
+/* ── 핵심 정보 줄 (메인 숫자 영역과 같은 형식) ── */
+/* 핵심 정보: 메인 수치(stats)와 같은 스타일 — 큰 값 + 오른쪽 라벨, 점선 구분 */
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #141414}
+.facts>div{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:16px;padding:clamp(36px,3.6vw,52px) 16px 8px}
+.facts>div+div::before{content:"";position:absolute;left:0;top:clamp(36px,3.6vw,52px);bottom:8px;width:2px;transform:translateX(-50%);background:radial-gradient(circle,var(--dim) 1px,transparent 1.3px) center top/2px 7px repeat-y}
+.facts b{font-family:var(--sans);font-weight:600;font-size:max(34px, calc(52 * var(--u)));letter-spacing:-.05em;line-height:.9;white-space:nowrap}
+.facts p{margin:0;padding-bottom:3px}
+.facts p>span{display:block;font-size:max(13px, calc(15 * var(--u)));font-weight:700;letter-spacing:-.02em}
+.facts small{display:block;font-size:max(11px, calc(11 * var(--u)));color:var(--faint);letter-spacing:.02em;margin-top:2px}
+
+/* ── 01 기획 배경 ── */
+.bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,96px);align-items:start}
+.big-quote{margin:0;font-size:max(28px, calc(48 * var(--u)));font-weight:800;line-height:1.25;letter-spacing:-.045em}
+.big-quote em{font-style:normal;color:var(--point)}
+.bg-txt p{font-size:max(15px, calc(18 * var(--u)));line-height:1.75;color:#333;letter-spacing:-.02em}
+.bg-txt p+p{margin-top:16px}
+.bg-txt .concept{color:var(--sub)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chips span{font-size:max(12px, calc(13 * var(--u)));font-weight:600;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+
+/* ── 02 맛 설계 ── */
+.taste-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(32px,5vw,96px);align-items:start}
+.taste{list-style:none;margin:0;padding:0;border-top:1px solid #141414}
+.taste li{display:grid;grid-template-columns:calc(120 * var(--u)) 1fr calc(64 * var(--u));gap:20px;align-items:center;height:var(--row);padding:0;border-bottom:1px solid var(--line)}
+.taste li span{font-size:max(14px, calc(16 * var(--u)));font-weight:700}
+.taste .bar{height:6px;border-radius:999px;background:var(--cell-hover);overflow:hidden}
+.taste .bar i{display:block;height:100%;width:0;background:var(--point);border-radius:999px;transition:width 1.1s var(--ease) .1s}
+.taste li b{font-family:var(--sans);font-weight:600;font-size:max(15px, calc(20 * var(--u)));text-align:right;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+/* 두 열 머리글·행 높이를 같게 맞춰 선이 나란히 이어지도록 */
+.taste-grid{--row:max(56px, calc(64 * var(--u)))}
+.col-h{margin:0 0 14px;font-family:var(--sans);font-size:max(11px, calc(12 * var(--u)));font-weight:600;letter-spacing:.04em;line-height:1.4;color:var(--point-strong)}
+.col-h::before{content:"§ "}
+.parts ol{list-style:none;margin:0;padding:0;border-top:1px solid #141414;counter-reset:p}
+.parts li{counter-increment:p;display:flex;gap:14px;align-items:center;height:var(--row);padding:0;border-bottom:1px solid var(--line);font-size:max(15px, calc(17 * var(--u)));font-weight:600}
+.parts li::before{content:counter(p,decimal-leading-zero);font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));font-weight:400;color:var(--faint)}
+
+/* ── 03 개발 과정: 점 · 선으로 이어지는 단계 ── */
+.process{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.process::before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;background:var(--line)}
+.process li{position:relative;padding:calc(36 * var(--u)) 24px 0 0}
+.process li::before{content:"";position:absolute;left:0;top:0;width:11px;height:11px;border-radius:50%;background:var(--bg);border:1.5px solid var(--fg)}
+.process li:last-child::before{background:var(--point);border-color:var(--point)}
+.process small{display:block;font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));color:var(--faint)}
+.process b{display:block;margin-top:6px;font-size:max(16px, calc(19 * var(--u)));font-weight:800;letter-spacing:-.03em}
+.process p{margin-top:10px;font-size:max(13px, calc(15 * var(--u)));line-height:1.65;color:var(--sub)}
+.process p .arrow{color:var(--point-strong);font-weight:700}
+
+/* ── 04 성과 ── */
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(24 * var(--u))}
+.results div{border-top:2px solid #141414;padding-top:20px}
+.results small{display:block;font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));color:var(--faint)}
+.results b{display:block;margin-top:10px;font-size:max(20px, calc(28 * var(--u)));font-weight:800;line-height:1.3;letter-spacing:-.04em}
+.results span{display:block;margin-top:8px;font-size:max(13px, calc(14 * var(--u)));color:var(--sub)}
+
+/* ── 이전 · 다음 메뉴 ── */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-block:0 calc(140 * var(--u))}
+.pager a{display:grid;grid-template-columns:calc(120 * var(--u)) 1fr;gap:20px;align-items:center;background:var(--cell);padding:20px;transition:background .25s var(--ease)}
+.pager a:hover{background:var(--cell-hover)}
+.pager .thumb{aspect-ratio:1;overflow:hidden;background:var(--studio)}
+.pager .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.pager a:hover .thumb img{transform:scale(1.05)}
+.pager small{font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));color:var(--faint)}
+.pager b{display:block;margin-top:8px;font-size:max(16px, calc(20 * var(--u)));font-weight:800;letter-spacing:-.03em}
+.pager span{display:block;margin-top:4px;font-size:max(13px, calc(14 * var(--u)));color:var(--sub)}
+.pager .next{grid-template-columns:1fr calc(120 * var(--u));text-align:right}
+.pager .next .thumb{order:2}
+
+@media (max-width:1000px){
+  .process{grid-template-columns:repeat(3,1fr);row-gap:40px}
+  .process::before{display:none}
+}
+@media (max-width:1023px){
+  .d-hero{padding-top:44px}
+  .d-title{font-size:clamp(40px, calc(64 * var(--u)), 88px)}
+  .d-top{margin-bottom:36px}
+  .back{padding:8px 14px 8px 11px}
+  .d-crumb{gap:6px 10px;font-size:max(11px, calc(12 * var(--u)))}
+  .d-crumb .hide-m{display:none}
+  .d-sub b{font-size:clamp(19px, calc(22 * var(--u)), 26px)}
+  .d-sub span{font-size:clamp(14px, calc(15 * var(--u)), 17px)}
+  .stage{aspect-ratio:4/3;margin-inline:calc(-1 * clamp(20px,3.4vw,49px))}   /* 가로로 넓혀 사진 양옆에 설명 글자 자리 확보 */
+  .stage .quote{left:20px;right:20px;top:20px;max-width:none}
+  .stage .quote b{font-size:clamp(15px, calc(17 * var(--u)), 20px)}
+  .stage .quote p{display:none}
+  .stage .num{right:20px;bottom:16px}
+  .stage{--x0:20%;--pw:.6}   /* 4:3 무대에서 사진 폭 = 60% */
+  .call{--len:calc(var(--hm) * var(--u))}
+  .call b{font-size:clamp(12px, calc(13 * var(--u)), 15px)}
+  .facts{margin-inline:calc(-1 * clamp(20px,3.4vw,49px))}   /* 휴대폰: 사진처럼 화면 끝까지 · 위 검은 선도 100% */
+  .facts>div{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:26px 6px 12px}
+  .facts>div+div::before{top:26px;bottom:12px}
+  .facts b{font-size:calc(25 * var(--u))}
+  .facts p>span{font-size:clamp(11px, calc(12 * var(--u)), 13px)}
+  .facts small{font-size:11px}
+  .bg-grid,.taste-grid{grid-template-columns:1fr;gap:36px}
+  .big-quote{font-size:clamp(24px, calc(28 * var(--u)), 34px)}
+  .bg-txt p{font-size:clamp(15px, calc(16 * var(--u)), 18px)}
+  .taste li{grid-template-columns:76px 1fr 44px;gap:12px}
+  /* 과정: 세로 타임라인 (경력과 같은 구조) */
+  .process{grid-template-columns:1fr;row-gap:0;margin-left:4px}
+  .process li{padding:0 0 28px 22px}
+  .process li::after{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}
+  .process li:first-child::after{top:11px}
+  .process li:last-child::after{bottom:auto;height:11px}
+  .process li::before{left:-5px;top:6px;width:11px;height:11px;z-index:1}
+  .process small{line-height:22px}
+  .results{grid-template-columns:1fr;gap:28px}
+  .results b{font-size:clamp(20px, calc(24 * var(--u)), 28px)}
+  .pager{grid-template-columns:1fr}
+  .pager a,.pager .next{grid-template-columns:84px 1fr;text-align:left}
+  .pager .next .thumb{order:0}
+}
+/* 성과: 다른 섹션과 같은 선 · 점선 스타일 */
+.hl{margin-bottom:calc(120 * var(--u))}
+.hl-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 24px;flex-wrap:wrap;margin-bottom:14px}
+.hl-head .col-h{margin:0}
+.hl-head .role{margin:0;font-size:max(13px, calc(14 * var(--u)));color:var(--sub)}
+.hl-head .role b{color:var(--fg);font-weight:700;margin-left:8px}
+.hl .results{gap:0;border-top:1px solid #141414}
+.hl .results div{position:relative;border-top:0;padding:calc(28 * var(--u)) calc(28 * var(--u)) 4px}
+.hl .results div:first-child{padding-left:0}
+.hl .results div+div::before{content:"";position:absolute;left:0;top:calc(28 * var(--u));bottom:4px;width:2px;transform:translateX(-50%);background:radial-gradient(circle,var(--dim) 1px,transparent 1.3px) center top/2px 7px repeat-y}
+.hl .results small{color:var(--point)}
+.hl .results b{font-size:max(19px, calc(24 * var(--u)));font-weight:700}
+/* 휴대폰 상세: 세로 길이를 줄이고 한 화면에 더 많이 보이게 */
+@media (max-width:1023px){
+  .hl{margin-bottom:64px}
+  .hl .results div{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line)}
+  .hl .results div+div::before{display:none}
+  .hl .results small{grid-row:1/3;font-size:11px}
+  .hl .results b{margin-top:0;font-size:clamp(17px, calc(18 * var(--u)), 21px)}
+  .hl .results span{margin-top:4px}
+  .d-hero ~ .sec{padding-top:56px}
+  .rule{margin-bottom:28px}
+  .sec-title{margin-bottom:20px}
+  .taste-grid{--row:52px}
+  .parts ol{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+  .parts li{font-size:15px}
+  .process li{padding-bottom:22px}
+  .pager{margin-bottom:120px}
+}
+/* 상세 하단 플로팅 바: 버튼 너비를 글자에 맞추고 좌우 간격을 고르게 */
+.tabbar.dnav{gap:0}
+.tabbar.dnav a{width:auto;min-width:68px;padding:9px 14px;text-align:center}
+.tabbar.dnav span{min-width:64px;padding:9px 6px;text-align:center}
+.tabbar.dnav i{margin:0 6px}
+@media (max-width:1023px){
+  /* 휴대폰: 바는 좌우 20px만 남기고 꽉 채우고, TOP은 바 위 20px에 */
+  .tabbar.dnav{left:50%;right:auto;bottom:22px;width:calc(100% - 40px);max-width:480px;height:52px;justify-content:space-between;transform:translate(-50%,160%)}
+  .tabbar.dnav.show{transform:translate(-50%,0)}   /* 태블릿 폭에서도 480px까지만 */
+  .tabbar.dnav a{flex:1;width:auto;min-width:0;padding:8px 6px}
+  .tabbar.dnav span{flex:1;min-width:0;padding:8px 4px}
+  .tabbar.dnav i{margin:0 2px}
+  .to-top{right:max(20px, calc((100% - 480px) / 2));bottom:calc(22px + 52px + 20px)}   /* 바 오른쪽 끝에 맞춤 */
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+
+<main id="main">
+  <section class="container d-hero" aria-labelledby="d-title">
+    <div class="d-top">
+      <a class="back" id="backBtn" href="index.html#all"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H3M7.5 3.5 3 8l4.5 4.5"/></svg>뒤로가기</a>
+      <nav class="d-crumb" id="d-crumb" aria-label="현재 위치"></nav>
+    </div>
+    <h1 class="d-title" id="d-title"></h1>
+    <p class="d-sub" id="d-sub"></p>
+    <div class="stage" id="stage"></div>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <section class="container sec" id="background" aria-labelledby="bg-h">
+    <div class="rule"><b><em>01</em>Background · 기획 배경</b></div>
+    <div class="bg-grid">
+      <h2 class="big-quote" id="bg-h"></h2>
+      <div class="bg-txt" id="bg-txt"></div>
+    </div>
+  </section>
+
+  <section class="container sec" id="taste" aria-labelledby="taste-h">
+    <div class="rule"><b><em>02</em>Taste Design · 맛 설계</b></div>
+    <h2 class="sec-title" id="taste-h">맛 설계<small>어떤 맛을 앞에, 어떤 맛을 뒤에 둘지 정했어요.</small></h2>
+    <div class="taste-grid">
+      <div><h3 class="col-h">맛 밸런스</h3><ul class="taste" id="taste-list"></ul></div>
+      <div class="parts"><h3 class="col-h">구성 재료</h3><ol id="parts"></ol></div>
+    </div>
+  </section>
+
+  <section class="container sec" id="process" aria-labelledby="proc-h">
+    <div class="rule"><b><em>03</em>Process · 개발 과정</b></div>
+    <h2 class="sec-title" id="proc-h">개발 과정<small>시식 → 수정 → 매장 테스트 → 품평 → 출시</small></h2>
+    <ol class="process" id="steps"></ol>
+  </section>
+
+  <section class="container sec" id="result" aria-labelledby="res-h">
+    <div class="rule"><b><em>04</em>Result · 성과</b></div>
+    <h2 class="sec-title" id="res-h">성과<small>출시 뒤 매장과 고객에게서 확인한 반응이에요.</small></h2>
+    <div class="hl"><div class="hl-head"><h3 class="col-h">주요 성과</h3><p class="role" id="role"></p></div><div class="results" id="results"></div></div>
+    <nav class="pager" id="pager" aria-label="다른 메뉴"></nav>
+  </section>
+</main>
+
+<nav class="tabbar dnav show" aria-label="메뉴 이동"><a href="index.html#all">← 목록</a><i></i><a id="prevBtn" href="index.html#all" aria-label="이전 메뉴">‹ 이전</a><span id="pos"></span><a id="nextBtn" href="index.html#all" aria-label="다음 메뉴">다음 ›</a></nav>
+<button class="to-top" id="toTop" type="button" aria-label="맨 위로">TOP</button>
+
+<script src="data.js?v=10"></script>
+<script>
+(function(){
+  var P=window.PF, CATS=P.cats, ITEMS=P.items;
+  var LIST='index.html', SELF='detail.html';
+  function $(id){return document.getElementById(id);}
+  function no(n){return (n<10?'0':'')+n;}
+  var id=parseInt(new URLSearchParams(location.search).get('id'),10);
+  if(!(id>=1&&id<=ITEMS.length))id=ITEMS.length;
+  /* 목록은 최신순(12→1)이므로 '다음'은 번호가 작은 쪽 */
+  var it=ITEMS[id-1], c=CATS[it.type];
+  var nextIt=ITEMS[(id-2+ITEMS.length)%ITEMS.length], prevIt=ITEMS[id%ITEMS.length];
+  document.title=it.name+' · '+P.profile.name+' 메뉴 개발 포트폴리오';
+
+  /* 히어로 */
+  $('d-crumb').innerHTML='<a href="'+LIST+'#all">전체 메뉴</a><i class="sep" aria-hidden="true"></i><span>CASE '+no(it.id)+'</span><i class="sep hide-m" aria-hidden="true"></i><span class="hide-m">'+c.ko+' · '+it.coll+'</span>';
+  /* 뒤로가기: 이 사이트에서 왔으면 이전 화면으로, 아니면 전체 메뉴로 */
+  $('backBtn').addEventListener('click',function(e){
+    if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back();}
+  });
+  $('d-title').innerHTML=it.en.toLowerCase().split(' ').map(function(w){return '<span class="w">'+w+'</span>';}).join(' ');
+  $('d-sub').innerHTML='<b>'+it.name+'</b><span>'+it.concept+'</span>';
+
+  /* 사진 무대 + 재료 주석 (data.js pts = 사진 속 재료 위치) */
+  var KIND=[{c:'up',h:130,hm:60},{c:'up',h:70,hm:30},{c:'l',h:170,hm:84},{c:'r',h:170,hm:44}];
+  var calls=(it.parts||[]).slice(0,4).map(function(p,i){var k=KIND[i], pt=(it.pts||[])[i]||[50,50];
+    return '<span class="call '+k.c+'" data-k="'+k.c+'" style="--px:'+pt[0]+';--py:'+pt[1]+';--h:'+k.h+';--hm:'+k.hm+'"><i></i><b>'+p+'</b></span>';}).join('');
+  var photo=it.img?'<div class="photo"><img src="'+it.img+'" alt="'+it.name+' 완성 사진"></div>':'<i class="plate"></i><i class="food"></i>';
+  var st=$('stage'); st.style.setProperty('--t1',it.tone[0]); st.style.setProperty('--t2',it.tone[1]);
+  st.innerHTML=photo+calls+'<div class="quote"><b>'+it.quote+'</b><p>'+it.quoteSub+'</p></div><span class="num">CASE '+no(it.id)+' / '+no(ITEMS.length)+'</span>';
+
+  /* 설명선 배치: 설명선마다 4가지 후보(위·글자 오른쪽 / 위·글자 왼쪽 / 왼쪽 가로 / 오른쪽 가로)를 두고
+     모든 조합 중 조건을 지키면서 선이 가장 짧은 배치를 고름
+     조건: 글자가 ① 상품 위에 올라가지 않음 ② 이미지 속 제목과 거리 유지 ③ 글자끼리 8px 이상
+           ④ 다른 설명선 위에 올라가지 않음 ⑤ 무대 가장자리 안쪽 · 선은 상품 바깥까지만 짧게 */
+  var BOX=it.box||[15,85,32];
+  function layoutCalls(){
+    var calls=[].slice.call(st.querySelectorAll('.call')), ph=st.querySelector('.photo'); if(!ph||!calls.length)return;
+    calls.forEach(function(c){c.style.removeProperty('--len');c.className='call '+c.dataset.k;});
+    var mob=matchMedia('(max-width:1023px)').matches, W=st.clientWidth, H=st.clientHeight;
+    var pw=ph.offsetWidth, pl=ph.offsetLeft-pw/2, X=function(p){return pl+p/100*pw;};
+    var P={l:X(BOX[0]),r:X(BOX[1]),t:BOX[2]/100*H,b:H*.86};
+    var q=st.querySelector('.quote'), QG=mob?20:32, Q=q?{l:q.offsetLeft-QG,r:q.offsetLeft+q.offsetWidth+QG,t:0,b:q.offsetTop+q.offsetHeight+QG}:null;
+    var gap=mob?8:40, pad=mob?8:24, LG=10, lift=mob?10:34, minL=mob?16:56;   /* PC는 공간이 넓으니 선을 더 길게 · 상품에서 더 띄움 */
+    var hit=function(a,b,g){return a.l<b.r+g&&b.l<a.r+g&&a.t<b.b+g&&b.t<a.b+g;};
+    var info=calls.map(function(c){var b=c.querySelector('b');return {c:c,x:c.offsetLeft,y:c.offsetTop,w:b.offsetWidth,h:b.offsetHeight,k:c.dataset.k};});
+    function opts(o){
+      var res=[], upLen=Math.max(minL,o.y-P.t+lift), tiers=[upLen,upLen+o.h+(mob?10:18)];
+      tiers.forEach(function(len,ti){
+        var bot=o.y-len-LG;
+        res.push({k:'up',len:len,box:{l:o.x-2,r:o.x-2+o.w,t:bot-o.h,b:bot},line:{l:o.x,r:o.x,t:o.y-len,b:o.y},cost:len+(ti?30:0)});
+        res.push({k:'upl',len:len,box:{l:o.x+2-o.w,r:o.x+2,t:bot-o.h,b:bot},line:{l:o.x,r:o.x,t:o.y-len,b:o.y},cost:len+12+(ti?30:0)});
+      });
+      var ll=Math.max(minL,o.x-P.l-LG+gap), rl=Math.max(minL,P.r-o.x-LG+gap);   /* 글자가 상품 가장자리에서 gap만큼 떨어지는 최소 길이 */
+      res.push({k:'l',len:ll,box:{l:o.x-ll-LG-o.w,r:o.x-ll-LG,t:o.y-o.h/2,b:o.y+o.h/2},line:{l:o.x-ll,r:o.x,t:o.y,b:o.y},cost:ll});
+      res.push({k:'r',len:rl,box:{l:o.x+rl+LG,r:o.x+rl+LG+o.w,t:o.y-o.h/2,b:o.y+o.h/2},line:{l:o.x,r:o.x+rl,t:o.y,b:o.y},cost:rl});
+      res.forEach(function(r){
+        var B=r.box, bad=0;
+        if(B.l<pad||B.r>W-pad||B.t<pad||B.b>H-pad)bad+=1000;
+        if(hit(B,P,4))bad+=1000;
+        if(Q&&hit(B,Q,0))bad+=1000;
+        if(r.k!==o.k)r.cost+=(o.k==='up'&&r.k==='upl')?6:24;   /* 원래 방향 선호 */
+        r.cost+=bad;
+      });
+      return res;
+    }
+    var O=info.map(opts), best=null, bestCost=1e9, pick=[];
+    (function search(i,cost){
+      if(cost>=bestCost)return;
+      if(i===O.length){bestCost=cost;best=pick.slice();return;}
+      O[i].forEach(function(r){
+        var add=r.cost;
+        for(var j=0;j<i;j++){var s=pick[j];
+          if(hit(r.box,s.box,mob?8:28))add+=1000;          /* 글자끼리 (PC는 넉넉히 28px) */
+          if(hit(r.box,s.line,4)||hit(s.box,r.line,4))add+=1000;   /* 글자가 다른 선 위 */
+          if(hit(r.line,s.line,0))add+=60;                 /* 선끼리 교차는 되도록 피함 */
+        }
+        pick[i]=r;search(i+1,cost+add);
+      });
+    })(0,0);
+    best.forEach(function(r,i){var c=info[i].c;c.className='call '+r.k;c.style.setProperty('--len',Math.round(r.len)+'px');});
+  }
+  layoutCalls(); addEventListener('resize',layoutCalls);
+
+  /* 핵심 정보 줄 */
+  var dt=it.date.split('.');
+  $('facts').innerHTML=[
+    ['20'+dt[0]+'.'+dt[1],'출시','Launched'],
+    [it.coll.replace(' 컬렉션',''),'컬렉션','Collection'],
+    [c.ko,'분류','Category']
+  ].map(function(f){return '<div><b>'+f[0]+'</b><p><span>'+f[1]+'</span><small>'+f[2]+'</small></p></div>';}).join('');
+  $('role').innerHTML='맡은 역할<b>'+it.role+'</b>';
+
+  /* 01 기획 배경 */
+  $('bg-h').innerHTML=it.quote.replace(/^"/,'“').replace(/"$/,'”');
+  $('bg-txt').innerHTML='<p>'+it.bg+'</p><p class="concept">'+it.quoteSub+'</p><div class="chips">'+it.kw.map(function(k){return '<span>#'+k+'</span>';}).join('')+'</div>';
+
+  /* 02 맛 설계 */
+  $('taste-list').innerHTML=it.taste.map(function(t){return '<li><span>'+t[0]+'</span><div class="bar" role="img" aria-label="'+t[0]+' '+t[1]+'%"><i data-w="'+t[1]+'"></i></div><b><span class="n" data-to="'+t[1]+'">'+t[1]+'</span>%</b></li>';}).join('');
+  $('parts').innerHTML=(it.parts||[]).map(function(p){return '<li>'+p+'</li>';}).join('');
+
+  /* 03 개발 과정 */
+  $('steps').innerHTML=it.steps.map(function(x,i){
+    var t=x[1].replace('→','<span class="arrow">→</span>');
+    return '<li><small>STEP '+no(i+1)+'</small><b>'+x[0]+'</b><p>'+t+'</p></li>';}).join('');
+
+  /* 04 성과 */
+  $('results').innerHTML=it.results.map(function(r,i){return '<div><small>'+no(i+1)+'</small><b>'+r[0]+'</b><span>'+r[1]+'</span></div>';}).join('');
+
+  /* 이전 · 다음 */
+  function card(x,cls,dir){return '<a class="'+cls+'" href="'+SELF+'?id='+x.id+'"><span class="thumb">'+(x.img?'<img src="'+x.img+'" alt="" loading="lazy">':'')+'</span><span><small>'+dir+' · CASE '+no(x.id)+'</small><b>'+x.name+'</b><span>'+x.concept+'</span></span></a>';}
+  $('pager').innerHTML=card(prevIt,'prev','← 이전')+card(nextIt,'next','다음 →');
+
+  /* 하단 탭 · 키보드 · TOP */
+  $('pos').textContent=no(it.id)+' / '+ITEMS.length;
+  $('prevBtn').href=SELF+'?id='+prevIt.id;
+  $('nextBtn').href=SELF+'?id='+nextIt.id;
+  addEventListener('keydown',function(e){
+    if(e.target.closest&&e.target.closest('input,textarea'))return;
+    if(e.key==='ArrowLeft')location.href=SELF+'?id='+prevIt.id;
+    if(e.key==='ArrowRight')location.href=SELF+'?id='+nextIt.id;
+    if(e.key==='Escape')location.href=LIST;
+  });
+  var topBtn=$('toTop');
+  topBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+  /* 화면에 들어오면: 주석선 · 맛 막대 · 퍼센트 카운팅 */
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(function(){document.querySelector('.d-hero').classList.add('ready');},60);
+  var tasteBox=$('taste-list'), done=false;
+  var nums=[].slice.call(tasteBox.querySelectorAll('.n'));
+  if(!reduce)nums.forEach(function(n){n.textContent='0';});
+  function runTaste(){
+    if(done)return;done=true;
+    tasteBox.querySelectorAll('.bar i').forEach(function(b){b.style.width=b.dataset.w+'%';});
+    if(reduce)return;
+    var t0=performance.now();
+    var timer=setInterval(function(){var p=Math.min(1,(performance.now()-t0)/1100), e=1-Math.pow(1-p,3);
+      nums.forEach(function(n){n.textContent=Math.round(+n.dataset.to*e);}); if(p>=1)clearInterval(timer);},16);
+  }
+  function onScroll(){
+    topBtn.classList.toggle('show',window.scrollY>400);
+    var r=tasteBox.getBoundingClientRect(); if(r.top<innerHeight*.85&&r.bottom>0)runTaste();
+  }
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+</body></html>

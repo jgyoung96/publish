@@ -1,0 +1,832 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>메뉴 개발 포트폴리오 · 민지혜</title>
+<meta name="description" content="제철 재료로 다시 찾게 되는 디저트를 만드는 6년 차 제과 · 음료 메뉴 개발자 민지혜의 포트폴리오입니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="base.css?v=45">
+<style>
+/* ── KV: 흰 포스터 — 큰 글자 × 누끼 크루아상, 최대 1440px ── */
+.kv-wrap{background:#fff;overflow:hidden;min-height:100svh;display:flex;align-items:center}   /* 배경은 화면 전체 · 첫 화면 높이를 꽉 채움 */
+.kv-wrap>.kv{flex:1}
+.kv{position:relative;max-width:1440px;margin:0 auto;color:#111;isolation:isolate;
+  height:clamp(calc(min(100cqw, 1440px) * .58), 100svh, calc(min(100cqw, 1440px) * .74));min-height:560px}
+  /* PC: 첫 화면 높이에 맞춰 늘고 줄어듦(100svh) · 단, 폭 대비 0.58~0.74배 안에서만 → 너무 납작하거나 길어져 글자가 겹치지 않게 */
+.kv .intro .m-br{display:none}
+.kv .intro{position:absolute;left:3.4%;top:48px;width:min(560px,44%);font-size:max(12px, calc(14 * var(--u)));line-height:1.5;font-weight:500;letter-spacing:-.02em;z-index:5}
+.kv .side{position:absolute;right:2.6%;top:48px;writing-mode:vertical-rl;font-family:"Inter",sans-serif;font-weight:500;font-size:max(18px, calc(27 * var(--u)));letter-spacing:-.02em;z-index:5}
+.kv .side i{font-style:normal;display:inline-block;transform:rotate(90deg);margin-bottom:8px;color:var(--point)}
+.kv .big{position:absolute;margin:0;font-family:"Inter",sans-serif;font-weight:500;font-size:max(64px, calc(138 * var(--u)));line-height:.92;letter-spacing:-.065em;white-space:nowrap;z-index:1}
+.kv .big .sec{font-weight:400;letter-spacing:-.02em;color:var(--point)}   /* 포인트 컬러 1: 큰 글자 속 § */
+.kv .b1{left:19%;top:19%}
+.kv .b2{left:19%;top:33%}
+.kv .b3{right:7%;top:47%}
+.kv .b4{right:7%;top:61%}
+.kv .list{position:absolute;font-family:"Inter","Pretendard",sans-serif;font-size:max(12px, calc(18 * var(--u)));line-height:1.3;letter-spacing:-.02em;z-index:1}
+.kv .la{left:3.4%;top:47%}
+.kv .lb{right:7%;top:76%;width:min(300px,24%);text-align:left}
+/* 그림자는 회전하지 않는 바깥 틀에 걸어 빛 방향을 통일 (왼쪽 위 → 오른쪽 아래) */
+.kv .oa,.kv .ob{position:absolute;z-index:3;animation:drop 1s var(--ease);filter:drop-shadow(14px 20px 16px rgba(60,38,14,.20)) drop-shadow(3px 5px 4px rgba(60,38,14,.16))}
+.kv .oa img,.kv .ob img{display:block;width:100%}
+.kv .oa{left:48.5%;top:6%;width:30%}
+.kv .oa img{rotate:-8deg}
+.kv .ob{left:15%;top:42%;width:31%}
+.kv .ob img{rotate:-32deg}
+@keyframes drop{from{opacity:0;translate:0 -36px}to{opacity:1;translate:0 0}}
+.kv .logo{position:absolute;left:3.4%;bottom:5.5%;display:flex;align-items:flex-end;gap:10px;z-index:5}
+.kv .logo h1{margin:0;font-size:max(28px, calc(43 * var(--u)));font-weight:800;letter-spacing:0;line-height:1}
+.kv .logo span{font-family:"Inter",sans-serif;font-size:max(11px, calc(14 * var(--u)));font-weight:600;line-height:1.05;letter-spacing:-.02em;padding-bottom:2px}
+/* 스크롤 유도: 작고 차분하게 — 짧은 선을 따라 점이 천천히 내려감 */
+/* 포인트 컬러 3: 회전하는 원형 스탬프 */
+.kv .stamp{position:absolute;left:75%;top:30%;width:clamp(96px,8.6vw,124px);aspect-ratio:1;z-index:4;container-type:inline-size;animation:drop 1s var(--ease)}
+.kv .stamp svg{display:block;width:100%;height:100%;animation:spin 18s linear infinite}
+.kv .stamp b{position:absolute;inset:0;display:grid;place-items:center;align-content:center;font-family:var(--sans);font-weight:600;font-size:16cqw;letter-spacing:-.03em;color:#fff;line-height:1;text-align:center}   /* 라벨 크기에 비례해 글자·간격이 함께 줄어듦 */
+.kv .stamp b small{display:block;font-size:.55em;font-weight:500;letter-spacing:.08em;margin-top:.25em;opacity:.9}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.kv .stamp svg{animation:none}}
+/* KV가 화면보다 길어지는 넓고 낮은 화면(큰 휴대폰 · 태블릿)에서는 화면 하단에 고정된 스크롤 안내가 글자와 겹치므로 숨김 */
+@media (max-width:699px) and (min-aspect-ratio:100/205){.kv-wrap .kv .cue{display:none}}   /* 큰 휴대폰: KV가 화면보다 길어 글자와 겹치므로 숨김 (선택자를 한 단계 구체적으로) */
+/* 태블릿(700~1023): KV는 가운데 600px 열 → 오른쪽 빈 여백 가운데에 스크롤 안내를 둬서 글자와 겹치지 않게 */
+@media (min-width:700px) and (max-width:1023px){.kv-wrap .kv .cue{right:calc((100% - 600px) / 4 - 22px);bottom:32px}}
+.kv .cue{position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:6;   /* 화면 아래에서 32px */
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:max(11px, calc(11 * var(--u)));font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);cursor:pointer;background:none;border:0;padding:6px 10px;transition:opacity .4s,color .2s}
+.kv .cue .track{position:relative;width:1px;height:28px;background:rgba(0,0,0,.12);overflow:hidden}
+.kv .cue .track::after{content:"";position:absolute;left:-1px;top:-8px;width:3px;height:10px;border-radius:2px;background:var(--point);animation:cue 2.4s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes cue{0%{transform:translateY(0);opacity:0}25%{opacity:1}75%{opacity:1}100%{transform:translateY(36px);opacity:0}}
+.kv .cue:hover{color:#111}
+.kv .cue.away{opacity:0;pointer-events:none}
+.kv .kv-contact{position:absolute;right:3.4%;bottom:5.5%;display:grid;grid-template-columns:auto auto;gap:2px 28px;font-family:"Inter",sans-serif;font-size:max(11px, calc(12 * var(--u)));line-height:1.5;z-index:5}
+.kv .kv-contact a{color:inherit;text-decoration:none;transition:color .2s}
+.kv .kv-contact a:hover{color:var(--point)}
+
+/* ── 01 Hello — 왼쪽 큰 소개 · 오른쪽 프로필 사진(배경 없음) ── */
+.hello{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,96px);align-items:end}
+.hello .eyebrow-h{font-family:var(--sans);font-size:max(12px, calc(14 * var(--u)));font-weight:500;letter-spacing:.02em;color:var(--faint)}
+.hello .eyebrow-h b{color:#111;font-weight:600}
+.hello h2{margin:20px 0 0;font-size:max(32px, calc(53 * var(--u)));font-weight:800;line-height:1.28;letter-spacing:-.045em;color:#111}
+.hello h2 em{font-style:normal;color:var(--point)}
+.hello .pitch{font-size:max(17px, calc(21 * var(--u)));line-height:1.65;letter-spacing:-.02em;color:var(--sub);margin-top:24px;max-width:34em}
+.hello .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
+.hello .cta .btn{padding:10px 20px;font-size:max(13px, calc(15 * var(--u)))}   /* PC 약 48px 높이 */
+.hello .txt{padding-bottom:clamp(40px,5vw,80px)}   /* 글과 아래 선 사이 여백 */
+.portrait{position:relative;margin:0;align-self:end;justify-self:center;width:min(100%,520px)}
+.portrait img{display:block;width:100%;height:auto}   /* 사진 아래 끝이 선에 바로 닿음 */
+.portrait figcaption{position:absolute;right:0;bottom:18%;writing-mode:vertical-rl;font-family:var(--sans);font-size:max(11px, calc(11 * var(--u)));letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+.portrait .ph{aspect-ratio:4/5;display:grid;place-items:center;background:var(--cell-hover);border-radius:4px;color:var(--faint);font-size:max(12px, calc(13 * var(--u)))}
+/* 숫자 3개: 포스터의 큰 숫자 */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:0;border-top:1px solid #141414}
+/* 숫자 + 설명을 한 줄에: 숫자는 제목(약 56px)과 비슷한 크기로 맞춰 균형 */
+.stats>div{display:flex;align-items:flex-end;justify-content:center;gap:16px;padding:clamp(40px,4vw,56px) 16px 8px}
+/* 칸 구분: 세로선 대신 KV와 같은 § 기호 */
+.stats>div{position:relative}
+.stats>div+div::before{content:"";position:absolute;left:0;top:clamp(40px,4vw,56px);bottom:8px;width:2px;transform:translateX(-50%);background:radial-gradient(circle,var(--dim) 1px,transparent 1.3px) center top/2px 7px repeat-y}   /* 점선 세로줄: 2px 점 · 7px 간격, 숫자 높이만큼 */
+.stats b .n{display:inline-block;min-width:1ch;font-variant-numeric:tabular-nums}
+.stats b{order:1;font-family:var(--sans);font-weight:600;font-size:max(40px, calc(60 * var(--u)));letter-spacing:-.05em;line-height:.9;white-space:nowrap}
+.stats p{order:2;margin:0;padding-bottom:3px}
+.stats p>span{display:block;font-size:max(13px, calc(15 * var(--u)));font-weight:700;letter-spacing:-.02em}
+.stats small{display:block;font-family:var(--sans);font-size:max(11px, calc(11 * var(--u)));color:var(--faint);letter-spacing:.02em;margin-top:2px}
+
+/* ── 02 Profile — 나는 어떤 사람인지 / 찾는 자리 ── */
+.profile{display:grid;grid-template-columns:minmax(220px,.32fr) 1fr;gap:clamp(32px,5vw,96px);align-items:start}
+.profile .big-q{margin:0;font-family:var(--sans);font-weight:500;font-size:max(44px, calc(72 * var(--u)));line-height:1;letter-spacing:-.055em;position:sticky;top:40px}
+.profile .big-q small{display:block;font-family:var(--font);font-size:max(13px, calc(15 * var(--u)));font-weight:600;letter-spacing:-.01em;color:var(--faint);margin-top:14px}
+.profile .story{font-size:max(18px, calc(22 * var(--u)));line-height:1.6;letter-spacing:-.02em;color:#333;max-width:40em}
+.profile .story p+p{margin-top:14px}
+.profile .story b{color:#111;font-weight:800;background:linear-gradient(transparent 62%,var(--point-soft) 0)}
+.spec{display:grid;grid-template-columns:repeat(2,1fr);gap:36px 40px;margin:48px 0 0}
+.spec>div{border-top:2px solid #141414;padding-top:14px}
+.spec dt{color:var(--point-strong);font-family:var(--sans);font-size:max(11px, calc(12 * var(--u)));font-weight:600;letter-spacing:.02em}
+.spec dt::before{content:"§ "}
+.spec dd{margin:10px 0 0}
+.spec ul{list-style:none;margin:0;padding:0;font-size:max(14px, calc(16 * var(--u)));font-weight:500}
+.spec li{padding:7px 0;border-bottom:1px solid var(--line)}
+
+.perks-head{display:flex;align-items:baseline;gap:12px;margin-bottom:28px}
+.perks-head h3{font-family:var(--display);font-size:calc(30 * var(--u));font-weight:800;margin:0;letter-spacing:-.02em}
+.perks-head span{color:var(--faint);font-weight:500}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px;text-align:center}
+.perks .ic{height:128px;display:grid;place-items:center;font-size:calc(56 * var(--u))}
+.perks .ic img{width:128px;height:128px;transition:transform .45s var(--ease)}
+.perks>div:hover .ic img{transform:translateY(-8px) rotate(-8deg) scale(1.04)}
+.perks b{display:block;font-size:max(16px, calc(18 * var(--u)));font-weight:800;margin-top:12px;letter-spacing:-.02em}
+.perks p{font-size:max(12px, calc(14 * var(--u)));color:var(--sub);margin:6px auto 0;max-width:24ch}
+
+/* ── 02 대표 메뉴 ──────────────────────── */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.feat a{background:var(--cell);display:flex;flex-direction:column;transition:background .25s var(--ease)}
+.feat a:hover{background:var(--cell-hover)}
+.feat .shot{aspect-ratio:4/5}
+.feat a:hover .shot img{transform:scale(1.04)}
+.feat .shot .en{position:absolute;left:22px;top:20px;right:22px;font-size:calc(30 * var(--u));color:var(--navy);z-index:1}
+.feat .shot small{position:absolute;left:22px;bottom:18px;font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));color:#4b5873;z-index:1}
+.feat .body{padding:22px 24px 26px;flex:1}
+.feat h3{font-size:max(17px, calc(21 * var(--u)));margin:0 0 4px;letter-spacing:-.02em;font-weight:800}
+.feat .concept{font-size:max(12px, calc(14 * var(--u)));color:var(--sub)}
+.feat .role{padding:12px 24px;border-top:1px solid var(--line);font-size:max(12px, calc(13 * var(--u)));color:var(--sub)}
+.feat .role em{font-style:normal;font-family:var(--mono);font-size:max(11px, calc(11 * var(--u)));color:var(--faint);margin-right:8px}
+.feat-ctrl{display:none}
+.feat a.clone{display:none}
+/* 캐러셀 조작부: 왼쪽 번호 · 가운데 채워지는 진행 막대 · 오른쪽 화살표 */
+.fc-page{margin:0;display:flex;align-items:baseline;gap:6px;font-family:var(--sans);font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fc-page b{font-size:15px;font-weight:700;color:var(--fg)}
+.fc-bar{flex:1;height:2px;margin:0 16px;background:var(--line);position:relative;overflow:hidden;border-radius:2px}
+.fc-bar i{position:absolute;left:0;top:0;bottom:0;width:var(--fill,33.3%);background:var(--fg);transition:width .5s var(--ease)}   /* 현재 위치까지 채워짐 (1/3 → 2/3 → 3/3) */
+.fc-arrows{display:flex;gap:8px}
+.fc-btn{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--fg);cursor:pointer;transition:border-color .2s}
+.fc-btn:hover{border-color:var(--fg)}
+.fc-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fc-btn:focus-visible{outline:2px solid var(--point);outline-offset:2px}
+
+/* ── 03 경력 ──────────────────────────── */
+/* 경력 흐름 막대 */
+.span{margin:0 0 8px}
+.sp-bar{display:flex;gap:3px}
+.sp-seg{min-width:0}
+.sp-seg i{display:block;height:10px;margin-top:10px;background:var(--fg);opacity:.2}   /* 회사명 → 막대 → 연도 눈금 순서 */
+.sp-seg.s1 i{opacity:.4}
+.sp-seg.now i{background:var(--point);opacity:1}
+.sp-seg b{display:block;font-size:max(12px, calc(13 * var(--u)));font-weight:700;margin-top:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-seg small{display:block;font-family:var(--mono);font-size:max(11px, calc(11 * var(--u)));color:var(--faint)}
+.sp-axis{position:relative;height:18px;margin-top:0;border-top:1px solid transparent;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.sp-axis span{position:absolute;top:5px;transform:translateX(-50%);white-space:nowrap}
+.sp-axis span::before{content:"";position:absolute;left:50%;top:-6px;width:1px;height:5px;background:var(--line)}
+.sp-axis .first{left:0;transform:none}.sp-axis .first::before{left:0}
+.sp-axis .last{right:0;left:auto;transform:none;color:var(--point);font-weight:600}.sp-axis .last::before{left:auto;right:0}
+.tl{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--line)}
+.tl>li{display:grid;grid-template-columns:200px 1fr 200px;gap:0 40px;border-bottom:1px solid var(--line)}
+/* 날짜 첫 줄을 회사명 첫 줄·점과 같은 높이에 맞춤 */
+.tl .when{--fs:max(12px, calc(13 * var(--u)));padding:calc(28px + max(17px, calc(21 * var(--u))) * .7 - var(--fs) * .825) 0 28px;font-family:var(--mono);font-size:var(--fs);color:var(--sub)}
+.tl .when small{display:block;font-size:max(11px, calc(12 * var(--u)));color:var(--faint);margin-top:4px}
+.tl .when .tag{margin-top:12px;font-family:var(--font)}
+.tl .body{position:relative;padding:28px 0 32px 32px}
+/* 세로선도 점과 같은 방식(위치 지정 요소)으로 그려서, 창 너비가 소수점이어도 함께 움직이게 함 */
+.tl .body::after{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}
+/* 점: 세로선(테두리 1px) 중심에 맞추고, 회사명 첫 줄의 세로 중심에 맞춤 */
+.tl .body::before{content:"";position:absolute;left:.5px;transform:translateX(-50%);top:calc(28px + max(17px, calc(21 * var(--u))) * .7 - 4.5px);width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--fg);z-index:1}
+.tl li.now .body::before{background:var(--point);border-color:var(--point)}
+.tl h3{font-size:max(17px, calc(21 * var(--u)));margin:0;letter-spacing:-.02em;line-height:1.4;font-weight:800}
+.tl h3 span{font-size:max(12px, calc(14 * var(--u)));font-weight:500;color:var(--faint);margin-left:8px}
+.tl .job{color:var(--point-strong);font-size:max(12px, calc(14 * var(--u)));font-weight:700;margin-top:2px}
+.tl .sum{color:var(--sub);margin-top:14px;max-width:56ch}
+.tl ul{margin:14px 0 0;padding:0;list-style:none;font-size:max(12px, calc(14 * var(--u)))}
+.tl ul li{position:relative;padding-left:16px;margin-top:6px}
+.tl ul li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--point)}
+.tl .num{padding:28px 0;text-align:right}
+.tl .num b{display:block;font-family:var(--display);font-size:calc(44 * var(--u));font-weight:700;letter-spacing:-.03em;line-height:1}
+.tl .num>span{display:block;font-size:max(12px, calc(13 * var(--u)));color:var(--sub);margin-top:4px}
+.tl .num b .n{font-variant-numeric:tabular-nums}
+.tl .num a{display:inline-block;margin-top:14px;font-size:max(12px, calc(13 * var(--u)));color:var(--point);font-weight:700}
+.tl li.cert .num{padding:14px 0}
+.tl li.cert .when{padding:calc(14px + max(12px, calc(14 * var(--u))) * .825 - var(--fs) * .825) 0 14px}
+.tl li.cert .body{padding:14px 0 14px 32px;font-size:max(12px, calc(14 * var(--u)));color:var(--sub)}
+.tl li.cert .body::before{top:calc(14px + max(12px, calc(14 * var(--u))) * .825 - 3.5px);width:7px;height:7px;left:.5px;border-width:1px;border-color:var(--faint)}
+.tl li.cert .body b{color:var(--fg);font-weight:700;margin-left:6px}
+.tl-m{display:none}
+/* 접는 카드 (1023px 이하에서만 보임) */
+.jc{border-top:1px solid var(--line)}
+.jc:last-of-type{border-bottom:1px solid var(--line)}
+.jc summary{list-style:none;display:grid;grid-template-columns:1fr auto 18px;align-items:center;gap:12px;padding:18px 0;cursor:pointer}
+.jc summary::-webkit-details-marker{display:none}
+.jc summary:focus-visible{outline:2px solid var(--point);outline-offset:4px;border-radius:4px}
+.jc-main{display:flex;flex-direction:column;gap:3px;min-width:0}
+.jc .co{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1.35}
+.jc .co .sw{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:1px;background:var(--fg);opacity:.2}
+.jc .co .sw.s1{opacity:.4}
+.jc .co .sw.now{background:var(--point);opacity:1}   /* 위 경력 막대와 같은 색 */
+.jc .role{font-size:13px;font-weight:700;color:var(--point)}
+.jc .per{font-family:var(--mono);font-size:12px;color:var(--faint);display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.jc .per .tag{font-family:var(--font);font-size:11px;padding:1px 8px}
+.jc .cnt{text-align:right;line-height:1}
+.jc .cnt b{display:block;font-family:var(--sans);font-size:26px;font-weight:600;letter-spacing:-.04em}
+.jc .cnt small{display:block;margin-top:4px;font-size:11px;color:var(--sub)}
+.jc .chev{width:16px;height:16px;fill:none;stroke:var(--fg);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
+.jc[open] .chev{transform:rotate(180deg)}
+.jc-body{padding:0 0 22px}
+.jc-body .team{font-size:13px;color:var(--faint)}
+.jc-body .sum{margin-top:8px;font-size:15px;line-height:1.7;color:var(--sub)}
+.jc-body ul{margin:12px 0 0;padding:0;list-style:none;font-size:14px;line-height:1.6}
+.jc-body li{position:relative;padding-left:14px;margin-top:6px}
+.jc-body li::before{content:"";position:absolute;left:0;top:.68em;width:5px;height:5px;border-radius:50%;background:var(--point)}
+.cert-m{margin-top:28px}
+.cert-m h3{margin:0;font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--point)}   /* 프로필의 작은 제목(§ 찾는 자리)과 같은 모양 */
+.cert-m h3::before{content:"§ "}
+.cert-m ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.cert-m li{display:inline-flex;align-items:baseline;gap:8px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;font-size:13px}
+.cert-m li span{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* ── 04 전체 메뉴 ─────────────────────── */
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:12px}
+.count{font-size:max(12px, calc(13 * var(--u)));color:var(--sub)}
+.filters{display:flex;gap:8px}
+.filters button{border:1px solid var(--line);background:none;cursor:pointer;font-size:max(14px, calc(15 * var(--u)));font-weight:600;color:var(--sub);height:36px;padding:0 18px;border-radius:999px;transition:color .2s,background .2s,border-color .2s}
+.filters button:hover{color:var(--fg);border-color:var(--fg)}
+.filters button[aria-pressed="true"]{color:var(--point-ink);background:var(--point-strong);border-color:var(--point-strong)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+/* PC · 태블릿 폭: 회색 배경 대신 칸마다 테두리를 겹쳐 그림 → 필터로 칸이 비어도(예: 4개) 빈 자리는 흰색 */
+@media (min-width:1024px){
+  .grid{gap:0;background:none;border:0;padding:1px 0 0 1px}
+  .grid .cell{border:1px solid var(--line);margin:-1px 0 0 -1px}
+}
+.cell{background:var(--cell);display:flex;flex-direction:column;transition:background .25s var(--ease)}
+.cell:hover{background:var(--cell-hover)}
+.cell .shot{aspect-ratio:5/4}
+.cell:hover .shot img{transform:scale(1.04)}
+.cell .top{position:absolute;inset:0 0 auto;display:flex;justify-content:space-between;padding:16px 20px;font-family:var(--mono);font-size:max(11px, calc(12 * var(--u)));color:#4b5873;z-index:1}
+.cell .main{padding:22px 24px 24px;flex:1}
+.cell .en{font-size:max(12px, calc(13 * var(--u)));color:var(--faint);margin-bottom:8px;letter-spacing:.04em}
+.cell h3{font-size:max(17px, calc(21 * var(--u)));line-height:1.35;margin:0;letter-spacing:-.02em;font-weight:800;transition:transform .35s var(--ease)}
+.cell:hover h3{transform:translateX(4px)}
+.cell .concept{font-size:max(13px, calc(15 * var(--u)));color:var(--sub);margin-top:4px}
+.cell .kw{font-size:max(12px, calc(13 * var(--u)));color:var(--faint);margin-top:12px}
+.cell .foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 24px;border-top:1px solid var(--line);font-size:max(12px, calc(13 * var(--u)));color:var(--sub)}
+.cell .foot .mono{color:var(--faint)}
+.cell.hide{display:none}
+.cell.off{display:none}
+/* 전체 메뉴 페이지: 숫자는 글자만, 현재 페이지는 밑줄 · 화살표는 아이콘 */
+.pg{display:flex;justify-content:center;align-items:center;gap:4px;margin-top:28px}
+.pg[hidden]{display:none}
+.pg button{position:relative;min-width:40px;height:40px;padding:0 6px;border:0;background:none;font-family:var(--sans);font-size:15px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums;cursor:pointer}
+.pg button[aria-current="page"]{color:var(--fg);font-weight:700}
+.pg button[aria-current="page"]::after{content:"";position:absolute;left:50%;bottom:6px;width:16px;height:2px;background:var(--point);transform:translateX(-50%)}
+.pg .pg-arrow{display:grid;place-items:center;color:var(--fg)}
+.pg .pg-arrow svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pg button:disabled{color:var(--line);cursor:default}
+.pg button:focus-visible{outline:2px solid var(--point);outline-offset:2px;border-radius:6px}
+.cell.in{animation:in .4s var(--ease) both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── 05 연락 ──────────────────────────── */
+/* 07 연락: 제목 · 연락처 목록(복사 버튼) · 버튼 / 오른쪽 오브제 */
+/* 07 연락: KV와 짝을 이루는 마지막 포스터 — 작은 한글 제목 · 큰 영문 인사 · 크루아상 · 연락처 */
+.contact{position:relative;padding-bottom:120px}
+.c-head{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px}   /* 제목 왼쪽 · 메일 보내기 버튼은 오른쪽 위(제목 줄 끝) */
+.c-title{max-width:34em}
+.contact h2{font-size:max(30px, calc(48 * var(--u)));line-height:1.25;letter-spacing:-.04em;margin:0;font-weight:800}
+.contact h2 .accent{color:var(--point)}
+.contact .sub{color:var(--sub);margin-top:12px;font-size:max(15px, calc(17 * var(--u)))}
+.c-big{position:relative;z-index:1;margin:calc(40 * var(--u)) 0 0;font-family:"Inter",sans-serif;font-weight:500;font-size:max(64px, calc(150 * var(--u)));line-height:.9;letter-spacing:-.065em;color:#111;white-space:nowrap}
+.c-big .ind{display:inline-block;margin-left:1.1em}   /* 두 번째 줄을 들여 KV처럼 어긋나게 */
+.c-big .mk{font-weight:400;letter-spacing:-.02em;color:var(--point)}   /* KV의 § 와 같은 표시 */
+.c-obj{position:absolute;z-index:-1;right:-3.5%;top:-28%;width:min(38%,520px);transform:rotate(-8deg);filter:drop-shadow(14px 20px 16px rgba(60,38,14,.18)) drop-shadow(3px 5px 4px rgba(60,38,14,.12));pointer-events:none}   /* KV 크루아상과 같은 그림자 · 오른쪽 -3.5% · 잘라내지 않음 (가로 스크롤은 body에서 화면 끝 기준으로만 막음) */
+.c-foot{position:relative;z-index:2;max-width:560px;margin-top:calc(56 * var(--u))}
+.c-list{margin:0;border-top:1px solid #141414}
+.c-list>div{display:grid;grid-template-columns:calc(110 * var(--u)) 1fr;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}   /* dl 안에는 dt · dd만 (복사 버튼은 dd 안) */
+.c-list dt{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.c-list dd{margin:0;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.c-list dd a{font-family:var(--sans);font-size:max(17px, calc(22 * var(--u)));font-weight:600;letter-spacing:-.025em;color:var(--fg);word-break:break-all;transition:color .2s}
+.c-list dd a:hover{color:var(--point)}
+.c-list .copy{height:32px;padding:0 13px;border:1px solid var(--line);border-radius:999px;background:var(--bg);font-family:var(--font);font-size:12px;font-weight:600;color:var(--sub);cursor:pointer;transition:border-color .2s,color .2s}
+.c-list .copy:hover{border-color:var(--fg);color:var(--fg)}
+.c-list .copy:focus-visible{outline:2px solid var(--point);outline-offset:2px}
+.contact .cta{display:flex;flex-wrap:wrap;gap:10px;flex:none}
+.contact .cta .btn{height:48px;padding:0 34px;min-width:180px;justify-content:center}   /* 너비를 조금 더 넉넉하게 */
+.c-toast{position:fixed;left:50%;bottom:96px;z-index:40;margin:0;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:#141414;color:#fff;font-size:14px;font-weight:600;white-space:nowrap;box-shadow:0 12px 32px -12px rgba(0,0,0,.45);opacity:0;transform:translate(-50%,12px);pointer-events:none;transition:opacity .25s,transform .35s var(--ease)}   /* 복사 안내 토스트: 하단 탭 위에 잠깐 */
+.c-toast::before{content:"";width:16px;height:16px;flex:none;border-radius:50%;background:var(--point) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2 7 10.6l4.6-5' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.c-toast.on{opacity:1;transform:translate(-50%,0)}
+.c-toast.bad::before{background:#8a8f98 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 4.5v4.2M8 11.2v.3' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/16px no-repeat}   /* 실패 안내 */
+
+@media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.tl>li{grid-template-columns:150px 1fr 120px;gap:0 24px}}
+@media (max-width:900px){
+  .hello,.profile{grid-template-columns:1fr}
+  .portrait{width:min(78%,360px);order:-1;border-bottom:1px solid #141414;width:100%}
+  .portrait img{width:min(78%,360px);margin:0 auto}
+  .hello .txt{padding-top:32px}
+  .profile .big-q{position:static}
+}
+@media (max-width:1023px){
+  /* ── 휴대폰 KV: 화면 높이를 꽉 채우고, 위→아래로 읽히게 다시 배치 ── */
+  .kv-wrap{align-items:stretch}
+  .kv{aspect-ratio:auto;height:100svh;min-height:calc(min(100cqw, 600px) * 2.05);max-height:none}   /* 높이가 폭의 2.05배보다 작아지지 않게: 낮은 화면에서도 글자 줄이 겹치지 않음 */
+  .kv .intro{left:20px;top:24px;width:72%;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.55}
+  .kv .intro .m-br{display:inline}
+  .kv .side{right:14px;top:24px;font-size:clamp(12px, calc(14 * var(--u)), 15px);z-index:6}
+  .kv .big{font-size:calc(80 * var(--u));letter-spacing:-.06em}
+  .kv .b1{left:20px;top:15%}.kv .b2{left:20px;top:24%}
+  .kv .la{left:20px;top:36%;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}
+  .kv .b3{right:20px;top:50%}.kv .b4{right:20px;top:59%}
+  .kv .lb{right:20px;top:auto;bottom:165px;width:auto;white-space:nowrap;font-size:clamp(11px, calc(12 * var(--u)), 14px);line-height:1.4}   /* 이름 위로 일정 간격 */
+  .kv .oa{left:auto;right:-15%;top:22.5%;width:54%}
+  .kv .ob{left:-10%;top:47%;width:60%}
+  .kv .stamp{left:auto;right:7%;top:25%;width:clamp(70px,21%,124px);z-index:5}   /* 크루아상 윗부분에 반쯤 걸치게 */
+  .kv .stamp b{font-size:18.5cqw}    /* 휴대폰: 가운데 글자 조금 크게 */
+  .kv .logo{left:20px;bottom:88px}
+  .kv .logo h1{font-size:clamp(26px, calc(31 * var(--u)), 36px)}
+  .kv .kv-contact{left:20px;right:auto;bottom:44px;grid-template-columns:auto;gap:0;text-align:left;font-size:clamp(11px, calc(11 * var(--u)), 13px)}
+  .kv .kv-contact span:nth-child(n+3){display:none}   /* 휴대폰은 이메일 · 전화만 */
+  .kv .cue{left:auto;right:16px;bottom:24px;transform:none}
+  .kv .cue span{font-size:11px}   /* 휴대폰 · 태블릿: KV 글자 비율과 상관없이 작게 고정 */
+  .kv .cue .track{height:22px}
+  /* ── 휴대폰 글자 위계: 표시용 → 섹션 제목 → 강조 문단 → 본문 → 보조 ── */
+  .hello h2{font-size:clamp(26px, calc(31 * var(--u)), 36px)}
+  .hello .pitch{font-size:clamp(15px, calc(17 * var(--u)), 18px)}
+  .profile .big-q{font-size:clamp(40px, calc(48 * var(--u)), 58px);line-height:1.02}   /* 휴대폰: KV처럼 크게, 두 줄 사이 여유 */
+  .profile .big-q small{font-size:clamp(14px, calc(15 * var(--u)), 16px);margin-top:12px}
+  .profile .story{font-size:clamp(16px, calc(17 * var(--u)), 19px);line-height:1.75}
+  .spec ul{font-size:clamp(14px, calc(16 * var(--u)), 16px)}
+  .tl h3{font-size:clamp(17px, calc(20 * var(--u)), 21px)}
+  .tl .sum,.tl ul{font-size:clamp(13px, calc(15 * var(--u)), 15px)}
+  .tl .num b{font-size:clamp(20px, calc(25 * var(--u)), 28px)}
+  .perks b{font-size:clamp(15px, calc(17 * var(--u)), 18px)}
+  .perks p{font-size:clamp(12px, calc(14 * var(--u)), 14px)}
+  .feat .shot .en{font-size:clamp(20px, calc(25 * var(--u)), 30px)}
+  .feat h3,.cell h3{font-size:clamp(17px, calc(20 * var(--u)), 21px)}
+  .contact h2{font-size:clamp(25px, calc(28 * var(--u)), 34px)}
+  .perks{grid-template-columns:repeat(2,1fr);gap:36px 16px}
+  .perks .ic,.perks .ic img{height:96px;width:96px;margin:0 auto}
+  .grid{grid-template-columns:1fr}
+  .hello .cta .btn{padding:10px 18px}   /* 휴대폰: 다른 버튼과 같은 높이 */
+  /* 휴대폰 대표 메뉴: 자동 캐러셀 (한 장씩 넘김) */
+  .feat{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .feat::-webkit-scrollbar{display:none}
+  .feat a{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
+  .feat a.clone{display:flex}
+  .feat .shot{aspect-ratio:1/1}
+  .feat-ctrl{display:flex;align-items:center;margin-top:18px}
+  /* 휴대폰 전체 메뉴: 썸네일 + 글자 리스트형 */
+  .grid{border-inline:0;background:var(--line);gap:1px}
+  .cell{display:grid;grid-template-columns:clamp(92px,27vw,112px) 1fr;grid-template-rows:1fr auto;column-gap:14px;padding:14px 0}
+  .cell .shot{grid-row:1/3;aspect-ratio:1;border-radius:4px;align-self:start}
+  .cell .shot .top{display:none}
+  .cell .main{padding:2px 0 0;min-width:0}
+  .cell .en{font-size:11px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cell h3{font-size:clamp(15px, calc(16 * var(--u)), 17px)}
+  .cell .concept{font-size:13px;margin-top:2px}
+  .cell .kw{display:none}
+  .cell .foot{padding:8px 0 0;border-top:0;justify-content:flex-start;gap:8px;font-size:11px}
+  .cell .foot>span:first-child::after{content:"·";margin-left:8px;color:var(--faint)}
+  .cell:hover h3{transform:none}
+  .toolbar{flex-direction:column;align-items:start}
+  .stats>div{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:28px 8px 12px}
+  .stats>div+div::before{top:28px;bottom:12px}
+  .stats b{font-size:calc(27 * var(--u))}
+  .stats p>span{font-size:clamp(11px, calc(12 * var(--u)), 13px)}
+  .stats small{font-size:11px}
+  .spec{grid-template-columns:1fr;gap:28px}
+  /* ── 휴대폰 경력: 첫 점~마지막 점까지만 이어지는 세로선 · 작은 점 · 날짜 줄 중심 정렬 ── */
+  .tl{display:none}   /* 휴대폰 · 태블릿은 접는 카드(.tl-m)로 대체 */
+  .tl-m{display:block;margin-top:28px}
+  .tl{margin-top:28px;border-top:0}
+  .tl>li{grid-template-columns:1fr;gap:0;position:relative;margin-left:4px;padding:20px 0 26px 22px;border:0}
+  .tl>li::after{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line);z-index:0}
+  .tl>li:first-child::after{top:31px}
+  .tl>li:last-child::after{bottom:auto;height:23px}
+  .tl>li:last-child{padding-bottom:6px}
+  .tl .when{padding:0;border:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;line-height:22px;min-height:22px}
+  .tl .when small{margin:0;line-height:22px}
+  .tl .when .tag{margin:0;padding:0 8px;line-height:20px;font-size:max(11px, calc(11 * var(--u)))}
+  .tl .body{position:static;padding:10px 0 0;border:0}
+  .tl .body::after{display:none}
+  .tl .body::before{z-index:1;left:-4px;transform:none;top:26.5px;width:9px;height:9px;border-width:2px}
+  .tl li.now .body::before{box-shadow:none}
+  .tl li.cert{padding:12px 0 12px 22px}
+  .tl li.cert .when{padding:0}
+  .tl li.cert .body{padding:2px 0 0}
+  .tl li.cert .body::before{left:-3px;transform:none;top:19.5px;width:7px;height:7px;border-width:1.5px}
+  .tl ul li{padding-right:4px}
+  .tl .num{text-align:left;padding:14px 0 0;border:0;display:flex;align-items:baseline;gap:8px}
+  .tl .num b{display:inline;font-size:clamp(20px, calc(25 * var(--u)), 28px)}
+  .tl .num>span{display:inline;margin:0}
+  .tl li.cert .num{display:none}
+  .sp-seg b,.sp-seg small{display:none}
+  .contact{padding-bottom:88px}
+  .contact .sub{font-size:15px}
+  .c-big{margin-top:44px;font-size:calc(54 * var(--u));letter-spacing:-.06em}   /* 위 메일 버튼과 크루아상 사이 여유 */
+  .c-big .ind{margin-left:.7em}
+  .c-obj{top:-20%;right:-5%;width:38%}   /* 휴대폰: 오른쪽으로 살짝 걸치되 화면 끝(여백 20px) 안에서 끝나게 */
+  .c-head{flex-direction:column;align-items:stretch}
+  .c-foot{margin-top:32px;max-width:none}
+  .c-list>div{grid-template-columns:64px 1fr;gap:10px;padding:16px 0}
+  .c-list dt{font-size:11px}
+  .c-list dd a{font-size:clamp(15px, calc(16 * var(--u)), 18px)}
+  .c-list .copy{height:30px;padding:0 11px;font-size:12px}
+  .contact .cta .btn{flex:1;justify-content:center}
+}
+</style></head><body>
+
+
+<div class="kv-wrap"><section class="kv" aria-labelledby="kv-h">
+  <p class="intro" id="kv-intro"></p>
+  <p class="side" id="kv-side" aria-hidden="true"></p>
+  <p class="big b1" id="kv-b1" aria-hidden="true"></p>
+  <p class="big b2" id="kv-b2" aria-hidden="true"></p>
+  <p class="list la" id="kv-la"></p>
+  <p class="big b3" id="kv-b3" aria-hidden="true"></p>
+  <p class="big b4" id="kv-b4" aria-hidden="true"></p>
+  <p class="list lb" id="kv-lb"></p>
+  <div class="oa"><img id="kv-oa" alt=""></div>
+  <div class="ob"><img id="kv-ob" alt=""></div>
+  <div class="stamp" aria-hidden="true"><svg viewBox="0 0 120 120"><defs><path id="stampPath" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"/></defs><circle cx="60" cy="60" r="60" fill="var(--point)"/><text font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#fff"><textPath href="#stampPath" textLength="282" lengthAdjust="spacing">MENU DEVELOPMENT PORTFOLIO · 2026 · </textPath></text></svg><b>N°32<small>MENUS</small></b></div>
+  <div class="logo"><h1 id="kv-h"></h1><span id="kv-logo-s"></span></div>
+  <div class="kv-contact" id="kv-contact"></div>
+  <button class="cue" id="kvCue" type="button" aria-label="아래로 스크롤해 포트폴리오 보기"><span>Scroll</span><i class="track" aria-hidden="true"></i></button>
+</section></div>
+
+<main class="container">
+  <section class="sec" id="about" aria-labelledby="about-h">
+    <div class="rule"><b><em>01</em>Hello · 지원 정보</b></div>
+    <div class="hello">
+      <div class="txt">
+        <p class="eyebrow-h">Hello, I'm <b id="hello-name"></b><span id="hello-tag"></span></p>
+        <h2 id="about-h"></h2>
+        <p class="pitch" id="pitch"></p>
+        <div class="cta" id="cta"></div>
+      </div>
+      <figure class="portrait" id="portrait"></figure>
+    </div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section class="sec" id="profile" aria-labelledby="who-h">
+    <div class="rule"><b><em>02</em>Profile · 이런 사람이에요</b></div>
+    <div class="profile">
+      <h2 class="big-q" id="who-h"></h2>
+      <div>
+        <div class="story" id="who"></div>
+        <dl class="spec" id="spec"></dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="career" aria-labelledby="career-h">
+    <div class="rule"><b><em>03</em>Career · 경력</b></div>
+    <h2 class="sec-title" id="career-h"></h2>
+    <div class="span" id="span"></div>
+    <ol class="tl" id="tl"></ol>
+    <div class="tl-m" id="tlm"></div>
+  </section>
+
+  <section class="sec" id="how" aria-labelledby="perks-h">
+    <div class="rule"><b><em>04</em>How I Work</b></div>
+    <h2 class="sec-title" id="perks-h"></h2>
+    <div class="perks" id="perks"></div>
+  </section>
+
+  <section class="sec" id="featured" aria-labelledby="feat-h">
+    <div class="rule"><b><em>05</em>Signature Menu</b></div>
+    <h2 class="sec-title" id="feat-h"></h2>
+    <div class="feat" id="feat" aria-roledescription="carousel" aria-label="대표 메뉴"></div>
+    <div class="feat-ctrl" id="featCtrl">
+      <p class="fc-page" aria-live="polite"><b id="featNow">01</b><span>/ <span id="featAll">03</span></span></p>
+      <span class="fc-bar" aria-hidden="true"><i id="featBar"></i></span>
+      <div class="fc-arrows">
+        <button type="button" class="fc-btn" id="featPrev" aria-label="이전 대표 메뉴"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button type="button" class="fc-btn" id="featNext" aria-label="다음 대표 메뉴"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="all" aria-labelledby="all-h">
+    <div class="rule"><b><em>06</em>Full Menu</b></div>
+    <h2 class="sec-title" id="all-h"></h2>
+    <div class="toolbar">
+      <div class="count" id="count"></div>
+      <div class="filters" id="filters" role="group" aria-label="분류"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <nav class="pg" id="pg" aria-label="전체 메뉴 페이지"></nav>
+  </section>
+
+
+
+  <section class="sec" id="contact" aria-labelledby="contact-h">
+    <div class="rule"><b><em>07</em>Contact</b></div>
+    <div class="contact">
+      <div class="c-head">
+        <div class="c-title"><h2 id="contact-h"></h2><p class="sub" id="contact-sub"></p></div>
+        <div class="cta" id="cta2"></div>
+      </div>
+      <p class="c-big" aria-hidden="true">see you<br><span class="ind">next sea<span class="mk">§</span>on,</span><img class="c-obj" id="contact-obj" alt="" hidden></p>
+      <div class="c-foot">
+        <dl class="c-list" id="c-list"></dl>
+        <p class="c-toast" id="c-toast" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+
+
+
+</main>
+<nav class="tabbar" id="tabbar" aria-label="섹션 이동"><b class="ind" id="tabInd" aria-hidden="true"></b><a href="#about">소개</a><a href="#profile">프로필</a><a href="#career">경력</a><a href="#how">일하는 법</a><a href="#featured">대표 메뉴</a><a href="#all">전체 메뉴</a><a href="#contact">연락</a></nav>
+<button class="to-top" id="toTop" type="button" aria-label="맨 위로">TOP</button>
+<footer class="site-foot">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand"><b id="f-name"></b><span id="f-role"></span><p id="f-intro"></p></div>
+      <div><h3>Contact</h3><ul id="f-contact"></ul></div>
+    </div>
+    <p class="foot-slogan" id="f-slogan"></p>
+    <p class="foot-mark" aria-hidden="true">freshly baked<br class="fm-br"> <span class="s">by</span> <span id="f-mark"></span></p>
+    <div class="foot-copy"><span id="f-copy"></span><span>모든 인물 · 회사 · 메뉴 · 성과는 예시입니다</span></div>
+  </div>
+</footer>
+
+<script src="data.js?v=10"></script>
+<script>
+(function(){
+  var P=window.PF, CATS=P.cats, ITEMS=P.items, pr=P.profile, sk=pr.seeking||{}, kv=pr.kv||{}, SEC=pr.sections||{};
+  var detail='detail.html';
+  function no(n){return (n<10?'0':'')+n;}
+  function $(id){return document.getElementById(id);}
+  function shot(it){return it.img?'<img src="'+it.img+'" alt="'+it.name+' 사진" loading="lazy">':'<i class="plate"></i><i class="food"></i>';}
+  /* 오브제 이미지: 파일이 없으면 대체 내용으로 바꿈 */
+  /* 오브제 이미지: 파일이 없으면 대체 내용으로 (인라인 onerror 대신 이벤트 연결) */
+  function obj(src,cls,fallback){return src?'<img class="obj '+(cls||'')+'" src="'+src+'" alt="" data-fallback="'+(fallback||'')+'">':(fallback||'');}
+  function bindFallbacks(root){[].forEach.call((root||document).querySelectorAll('img[data-fallback]'),function(im){
+    function swap(){im.replaceWith(document.createTextNode(im.dataset.fallback||''));}
+    if(im.complete&&im.naturalWidth===0)swap();else im.addEventListener('error',swap,{once:true});});}
+  function img(el,src,alt){if(!src)return;el.onerror=function(){if(alt&&el.src.indexOf(alt)<0)el.src=alt;};el.src=src;}
+  function accent(s){return s.replace('{accent}','<span class="accent">').replace('{/accent}','</span>');}
+  function title(key,fallback,sub){var s=SEC[key]||[];return (s[1]||fallback)+((s[2]||sub)?'<small>'+(s[2]||sub)+'</small>':'');}
+  var mailBtn='<a class="btn primary" href="mailto:'+pr.email+'">메일 보내기 →</a>';
+  var resumeBtn=pr.resume?'<a class="btn" href="'+pr.resume+'" download>이력서 PDF ↓</a>':'';
+
+
+  /* KV */
+  var L=(kv.lines||[]).map(function(t){return t.replace('{s}','<span class="sec">§</span>');});
+  ['kv-b1','kv-b2','kv-b3','kv-b4'].forEach(function(id,i){$(id).innerHTML=L[i]||'';});
+  $('kv-intro').innerHTML=kv.intro||'';
+  $('kv-side').innerHTML='<i>§</i> '+(kv.side||'');
+  $('kv-la').innerHTML=(kv.listA||[]).join('<br>');
+  $('kv-lb').innerHTML=(kv.listB||[]).join('<br>');
+  img($('kv-oa'),kv.objA+'?v=2');img($('kv-ob'),kv.objB+'?v=2');
+  $('kv-h').textContent=pr.name;
+  $('kv-logo-s').innerHTML=(pr.en||'').toLowerCase()+'<br>'+(kv.logoSub||'');
+  /* 이메일 · 전화번호는 어디서든 같은 동작: 누르면 메일 앱 / 휴대폰은 '전화 걸기' 확인 창 */
+  var TEL=(pr.phone||'').replace(/[^0-9+]/g,'');
+  $('kv-contact').innerHTML='<span>(e): <a href="mailto:'+pr.email+'">'+pr.email+'</a></span><span>(m): <a href="tel:'+TEL+'">'+(pr.phone||'')+'</a></span><span>(y): '+(pr.year||'')+' portfolio</span><span>(r): '+pr.careerLine+'</span>';
+
+  /* 01 소개 */
+  $('hello-tag').textContent=sk.helloTag?' — '+sk.helloTag:'';
+  $('hello-name').textContent=pr.en?pr.en.toLowerCase().replace(/\b\w/g,function(c){return c.toUpperCase();}):pr.name;
+  $('about-h').innerHTML=sk.helloTitle||(sk.position||'');
+  var pf=$('portrait');
+  if(pr.portrait){var pim=new Image();pim.alt=pr.name+' 프로필 사진';pim.onload=function(){pf.innerHTML='';pf.appendChild(pim);pf.insertAdjacentHTML('beforeend','<figcaption>'+(pr.en||'')+' · '+(pr.year||'')+'</figcaption>');};pim.onerror=function(){pf.innerHTML='<div class="ph">프로필 사진</div>';};pim.src=pr.portrait;}
+  $('pitch').textContent=sk.helloSub||sk.sub||pr.lead;
+  $('cta').innerHTML=mailBtn+resumeBtn+'<a class="btn" href="#featured">갓 구운 메뉴 보기 ↓</a>';
+  var STEN=['Menus Launched','Seasons a Year','Stores Trained'];
+  /* 숫자 부분만 따로 감싸서 카운팅 (앞뒤 글자 '연', '곳'은 그대로) */
+  $('stats').innerHTML=pr.stats.map(function(s,i){
+    var m=String(s[0]).match(/^(\D*)(\d+)(\D*)$/);
+    var num=m?m[1]+'<span class="n" data-to="'+m[2]+'">'+m[2]+'</span>'+m[3]:s[0];
+    return '<div><b>'+num+'</b><p><span>'+s[1]+'</span><small>'+(STEN[i]||'')+'</small></p></div>';}).join('');
+  /* 숫자 카운팅: 영역이 화면에 들어오면 0 → 목표값 (여러 곳에서 재사용) */
+  function countUp(box){
+    var nums=[].slice.call(box.querySelectorAll('.n'));
+    if(!nums.length||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    nums.forEach(function(n){n.textContent='0';});
+    var done=false;
+    function run(){
+      if(done)return;done=true;
+      var t0=performance.now(), dur=1400;
+      var timer=setInterval(function(){
+        var p=Math.min(1,(performance.now()-t0)/dur), e=1-Math.pow(1-p,3);   /* 처음엔 빠르게, 끝에서 천천히 */
+        nums.forEach(function(n){n.textContent=Math.round(+n.dataset.to*e);});
+        if(p>=1)clearInterval(timer);
+      },16);
+    }
+    function check(){var r=box.getBoundingClientRect();if(r.top<innerHeight*.85&&r.bottom>0){run();removeEventListener('scroll',check);}}
+    addEventListener('scroll',check,{passive:true});check();
+  }
+  countUp($('stats'));
+  $('who-h').innerHTML=(sk.whoTitle||'Who am I?').replace(' ','<br>')+'<small>'+(sk.whoSub||'')+'</small>';
+  $('who').innerHTML=(sk.who||[]).map(function(t){return '<p>'+t+'</p>';}).join('');
+  $('spec').innerHTML=(sk.spec||[]).map(function(r){return '<div><dt>'+r[0]+'</dt><dd><ul>'+r[1].map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></dd></div>';}).join('');
+  $('perks-h').innerHTML=(sk.perksSub||'일하는 방식')+'<small>메뉴 하나가 매장에 자리 잡기까지, 이렇게 일해요.</small>';
+  $('perks').innerHTML=(sk.strengths||[]).map(function(r){
+    return '<div><span class="ic" aria-hidden="true">'+obj(r[3],'',r[0])+'</span><b>'+r[1]+'</b><p>'+r[2]+'</p></div>';}).join('');
+
+  /* 02 대표 메뉴 */
+  $('feat-h').innerHTML=title('featured','대표 메뉴','');
+  $('feat').innerHTML=(pr.featured||[]).map(function(id){
+    var it=ITEMS[id-1];if(!it)return '';
+    return '<a href="'+detail+'?id='+it.id+'" style="--t1:'+it.tone[0]+';--t2:'+it.tone[1]+'">'+
+      '<div class="shot">'+shot(it)+'<p class="en">'+it.en+'</p><small>'+no(it.id)+' · '+CATS[it.type].ko+'</small></div>'+
+      '<div class="body"><h3>'+it.name+'</h3><p class="concept">'+it.concept+'</p>'+
+      '</div>'+
+      '<div class="role"><em>ROLE</em>'+it.role+'</div></a>';
+  }).join('');
+
+  /* 대표 메뉴 캐러셀 (휴대폰에서만 · 무한 롤링: 양 끝에 복제 카드를 두고 도착하면 원본 위치로 순간 이동) */
+  (function(){
+    var box=$('feat'), real=[].slice.call(box.children), n=real.length, mq=matchMedia('(max-width:1023px)');
+    var calm=matchMedia('(prefers-reduced-motion:reduce)').matches, pos=1, timer=null, settle;
+    if(n<2){$('featCtrl').hidden=true;return;}
+    function clone(el){var c=el.cloneNode(true);c.classList.add('clone');c.setAttribute('aria-hidden','true');c.tabIndex=-1;return c;}
+    box.insertBefore(clone(real[n-1]),real[0]); box.appendChild(clone(real[0]));   /* [3'] 1 2 3 [1'] */
+    $('featAll').textContent=no(n);
+    function W(){return box.clientWidth;}
+    function jump(p){box.style.scrollSnapType='none';box.scrollLeft=p*W();pos=p;void box.offsetWidth;box.style.scrollSnapType='';}
+    /* 직접 애니메이션: 스냅을 잠시 끄고 0.5초 동안 부드럽게 이동 → 끝나면 복제 카드 처리 */
+    var anim=0;
+    function go(p){
+      pos=p;mark();cancelAnimationFrame(anim);
+      var from=box.scrollLeft,to=p*W(),t0=performance.now(),dur=calm?0:500;
+      box.style.scrollSnapType='none';
+      (function step(now){
+        var k=dur?Math.min(1,(now-t0)/dur):1, e=1-Math.pow(1-k,3);
+        box.scrollLeft=from+(to-from)*e;
+        if(k<1)anim=requestAnimationFrame(step); else {box.style.scrollSnapType='';fix();}
+      })(t0);
+    }
+    function real0(){return (pos-1+n)%n;}
+    function mark(){var k=real0();$('featNow').textContent=no(k+1);$('featBar').style.setProperty('--fill',((k+1)/n*100)+'%');real.forEach(function(c,i){var off=mq.matches&&i!==k;c.setAttribute('aria-hidden',off?'true':'false');c.tabIndex=off?-1:0;});}
+    function fix(){pos=Math.round(box.scrollLeft/W()); if(pos===0)jump(n); else if(pos===n+1)jump(1); mark();}
+    function stop(){clearInterval(timer);timer=null;}
+    function play(){stop(); if(mq.matches&&!calm)timer=setInterval(function(){go(pos+1);},4000);}
+    $('featPrev').addEventListener('click',function(){go(pos-1);play();});
+    $('featNext').addEventListener('click',function(){go(pos+1);play();});
+    box.addEventListener('scroll',function(){if(box.style.scrollSnapType==='none')return;clearTimeout(settle);settle=setTimeout(fix,120);},{passive:true});
+    ['touchstart','pointerenter','focusin'].forEach(function(e){box.addEventListener(e,stop,{passive:true});});
+    ['touchend','pointerleave','focusout'].forEach(function(e){box.addEventListener(e,play,{passive:true});});
+    new IntersectionObserver(function(es){es[0].isIntersecting?play():stop();}).observe(box);
+    document.addEventListener('visibilitychange',function(){document.hidden?stop():play();});
+    function init(){if(mq.matches)jump(pos<1||pos>n?1:pos);mark();play();}
+    mq.addEventListener('change',init); var lastW=0;addEventListener('resize',function(){var w=W();if(mq.matches&&w!==lastW){lastW=w;jump(pos);}});
+    init();
+  })();
+
+  /* 03 경력 */
+  function ym(s){var p=s.split('.');return +p[0]*12+(+p[1]-1);}
+  var nowD=new Date(), NOW=nowD.getFullYear()*12+nowD.getMonth();
+  function months(j){return (j.to?ym(j.to):NOW)-ym(j.from)+1;}
+  function dur(m){var y=Math.floor(m/12),r=m%12;return (y?y+'년':'')+(y&&r?' ':'')+(r?r+'개월':'');}
+  var JOBS=pr.career||[], total=JOBS.reduce(function(a,j){return a+months(j);},0);
+  $('career-h').innerHTML=title('career','경력','총 '+dur(total)+' · 생산 → 매장 디저트 → 본사 R&D, 차근차근 올라왔어요.');
+  /* 경력 흐름 막대: 회사별 근무 기간 비율 + 아래 시작 날짜 · 현재 (중간 연도는 정보 밀집이라 생략). 휴대폰은 막대 색을 카드 회사명 앞에 표시 */
+  var OLD=JOBS.slice().reverse(), S0=ym(OLD[0].from), SPAN=NOW+1-S0;
+  $('span').innerHTML='<div class="sp-bar">'+OLD.map(function(j,i){
+      return '<div class="sp-seg s'+i+(j.to?'':' now')+'" style="flex:'+months(j)+'"><b>'+j.company+'</b><small>'+dur(months(j))+'</small><i></i></div>';
+    }).join('')+'</div>'+
+    '<div class="sp-axis" aria-hidden="true"><span class="first">'+OLD[0].from+'</span><span class="last">현재</span></div>';
+  var rows=JOBS.map(function(j){return {k:ym(j.from),j:j};})
+    .concat((pr.certs||[]).map(function(c){return {k:ym(c.date),c:c};}))
+    .sort(function(a,b){return b.k-a.k;});
+  $('tl').innerHTML=rows.map(function(r){
+    if(r.c)return '<li class="cert"><div class="when">'+r.c.date+'</div><div class="body">자격 취득 <b>'+r.c.name+'</b></div><div class="num"></div></li>';
+    var j=r.j;
+    return '<li class="'+(j.to?'':'now')+'">'+
+      '<div class="when">'+j.from+' — '+(j.to||'현재')+'<small>'+dur(months(j))+'</small>'+(j.to?'':'<span class="tag point"><span class="dot live"></span>재직 중</span>')+'</div>'+
+      '<div class="body"><h3>'+j.company+'<span>'+j.team+'</span></h3><p class="job">'+j.title+'</p>'+
+        '<p class="sum">'+j.summary+'</p><ul>'+j.did.map(function(d){return '<li>'+d+'</li>';}).join('')+'</ul></div>'+
+      '<div class="num">'+(j.menus?'<b><span class="n" data-to="'+j.menus+'">'+j.menus+'</span></b><span>출시 메뉴</span>':'<span>생산 담당</span>')+
+        '</div></li>';
+  }).join('');
+
+  [].forEach.call(document.querySelectorAll('#tl .num'),countUp);
+
+  /* 휴대폰 · 태블릿 경력: 회사별 접는 카드 (현재 회사만 펼침) + 자격증은 아래 한 줄 */
+  var chev='<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg>';
+  $('tlm').innerHTML=JOBS.map(function(j,i){
+    return '<details class="jc'+(j.to?'':' now')+'"'+(i===0?' open':'')+'><summary>'+
+      '<span class="jc-main"><b class="co"><i class="sw s'+(JOBS.length-1-i)+(j.to?'':' now')+'" aria-hidden="true"></i>'+j.company+'</b><span class="role">'+j.title+'</span>'+
+      '<span class="per">'+j.from+' — '+(j.to||'현재')+' · '+dur(months(j))+(j.to?'':' <span class="tag point"><span class="dot live"></span>재직 중</span>')+'</span></span>'+
+      '<span class="cnt">'+(j.menus?'<b><span class="n" data-to="'+j.menus+'">'+j.menus+'</span></b><small>출시 메뉴</small>':'<small>생산 담당</small>')+'</span>'+chev+
+      '</summary><div class="jc-body"><p class="team">'+j.team+'</p><p class="sum">'+j.summary+'</p><ul>'+j.did.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div></details>';
+  }).join('')+
+  ((pr.certs||[]).length?'<div class="cert-m"><h3 class="col-h">자격증 취득 현황</h3><ul>'+pr.certs.slice().sort(function(a,b){return ym(b.date)-ym(a.date);}).map(function(c){return '<li><b>'+c.name+'</b><span>'+c.date+'</span></li>';}).join('')+'</ul></div>':'');
+  [].forEach.call(document.querySelectorAll('#tlm .cnt'),countUp);
+  /* 접는 카드: 높이를 0.35초 동안 부드럽게 열고 닫음 (동작 줄이기 설정이면 바로 전환) */
+  [].forEach.call(document.querySelectorAll('#tlm .jc'),function(el){
+    var sum=el.querySelector('summary'), body=el.querySelector('.jc-body'), anim=null;
+    var calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    sum.addEventListener('click',function(e){
+      if(calm||!body.animate)return;
+      e.preventDefault();
+      if(anim)anim.cancel();
+      var opening=!el.open;
+      if(opening)el.open=true;
+      var h=body.scrollHeight;
+      body.style.overflow='hidden';
+      var shut={height:'0px',paddingBottom:'0px',opacity:0}, full={height:h+'px',paddingBottom:getComputedStyle(body).paddingBottom,opacity:1};
+      anim=body.animate(opening?[shut,full]:[full,shut],{duration:350,easing:'cubic-bezier(.2,.7,.2,1)'});
+      var me=anim, done=false, finish=function(){if(done)return;done=true;me.cancel();if(!opening)el.open=false;body.style.overflow='';if(anim===me)anim=null;};
+      anim.onfinish=finish; setTimeout(finish,420);   /* 백그라운드 탭 등에서 애니메이션이 멈춰도 상태는 확실히 마무리 */
+    });
+  });
+
+  /* 04 전체 메뉴 (최신순) */
+  $('all-h').innerHTML=title('all','전체 메뉴','');
+  var grid=$('grid');
+  grid.innerHTML=ITEMS.slice().reverse().map(function(it){
+    var c=CATS[it.type];
+    return '<a class="cell" href="'+detail+'?id='+it.id+'" data-type="'+it.type+'">'+
+      '<div class="shot" style="--t1:'+it.tone[0]+';--t2:'+it.tone[1]+'">'+shot(it)+'<div class="top"><span>'+no(it.id)+'</span><span>'+c.ko+'</span></div></div>'+
+      '<div class="main"><p class="en">'+it.en+'</p><h3>'+it.name+'</h3><p class="concept">'+it.concept+'</p><p class="kw">'+it.kw.join(' · ')+'</p></div>'+
+      '<div class="foot"><span>'+it.coll+'</span><span class="mono">'+it.date+'</span></div></a>';
+  }).join('');
+  var count=$('count');count.textContent=ITEMS.length+'개 메뉴';
+  var fwrap=$('filters');
+  /* 필터: 전체 · 제과 · 제빵 · 음료 (제과와 제빵은 한 묶음) */
+  var GROUPS=[['전체',''],['제과 · 제빵','Dessert Bakery'],['음료','Beverage']];
+  GROUPS.forEach(function(g,i){
+    var b=document.createElement('button');b.type='button';b.dataset.f=g[1];b.setAttribute('aria-pressed',i===0);
+    b.textContent=g[0];fwrap.appendChild(b);
+  });
+  fwrap.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    fwrap.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b);});
+    var n=0;
+    grid.querySelectorAll('.cell').forEach(function(c){
+      var show=!b.dataset.f||b.dataset.f.split(' ').indexOf(c.dataset.type)>-1;
+      c.classList.toggle('hide',!show);c.classList.remove('in');
+      if(show){n++;void c.offsetWidth;c.style.animationDelay=(n-1)*30+'ms';c.classList.add('in');}
+    });
+    count.textContent=n+'개 메뉴';
+    page=1;paginate(false);
+  });
+
+  /* 휴대폰 전체 메뉴: 8개씩 페이지로 나눠 보여줌 (PC는 전부 표시) */
+  var PER=8, page=1, pg=$('pg'), mqM=matchMedia('(max-width:1023px)');
+  function paginate(scroll){
+    var list=[].slice.call(grid.querySelectorAll('.cell:not(.hide)'));
+    var pages=mqM.matches?Math.max(1,Math.ceil(list.length/PER)):1; if(page>pages)page=pages;
+    grid.querySelectorAll('.cell').forEach(function(c){c.classList.remove('off');});
+    if(mqM.matches)list.forEach(function(c,i){c.classList.toggle('off',Math.floor(i/PER)+1!==page);});
+    if(pages<2){pg.innerHTML='';pg.hidden=true;}
+    else{
+      pg.hidden=false;
+      var h='<button type="button" class="pg-arrow" data-p="'+(page-1)+'" aria-label="이전 페이지"'+(page===1?' disabled':'')+'><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>';
+      for(var i=1;i<=pages;i++)h+='<button type="button" data-p="'+i+'"'+(i===page?' aria-current="page"':'')+' aria-label="'+i+'페이지">'+no(i)+'</button>';
+      h+='<button type="button" class="pg-arrow" data-p="'+(page+1)+'" aria-label="다음 페이지"'+(page===pages?' disabled':'')+'><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>';
+      pg.innerHTML=h;
+    }
+    if(scroll)window.scrollTo({top:$('all').getBoundingClientRect().top+scrollY+40,behavior:'smooth'});
+  }
+  pg.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;page=+b.dataset.p;paginate(true);});
+  mqM.addEventListener('change',function(){paginate(false);});
+  paginate(false);
+
+  /* 05 연락 · 하단 바 */
+  $('contact-h').innerHTML=accent(pr.contactLine||'');
+  $('contact-sub').textContent=pr.contactSub||'';
+  $('cta2').innerHTML=mailBtn+resumeBtn;   /* 연결할 주소가 없던 인스타그램 버튼은 제거 */
+  /* 연락처 목록 + 복사 버튼 */
+  var tel=(pr.phone||'').replace(/[^0-9+]/g,'');
+  $('c-list').innerHTML=
+    '<div><dt>E-mail</dt><dd><a href="mailto:'+pr.email+'">'+pr.email+'</a><button type="button" class="copy" data-copy="'+pr.email+'" aria-label="이메일 주소 복사">복사</button></dd></div>'+
+    (pr.phone?'<div><dt>Phone</dt><dd><a href="tel:'+tel+'">'+pr.phone+'</a><button type="button" class="copy" data-copy="'+pr.phone+'" aria-label="전화번호 복사">복사</button></dd></div>':'');
+  /* 복사 버튼 (Contact · 푸터 공통) → 토스트로 안내 */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.c-list .copy, .site-foot .copy');if(!b)return;
+    var v=b.dataset.copy, kind=v.indexOf('@')>-1?'이메일 주소를':'전화번호를', toast=$('c-toast');
+    function show(msg,bad){toast.textContent=msg;toast.classList.toggle('bad',!!bad);toast.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(function(){toast.classList.remove('on');},2000);}
+    function legacy(){   /* 예전 방식: 숨긴 입력칸을 선택해 복사 — 성공 여부를 그대로 돌려줌 */
+      var t=document.createElement('textarea');t.value=v;t.setAttribute('readonly','');t.style.cssText='position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand('copy');}catch(_){}t.remove();b.focus();return ok;
+    }
+    var done=function(){show(kind+' 복사했어요');}, fail=function(){if(legacy())done();else show('복사하지 못했어요. 길게 눌러 직접 복사해 주세요',true);};
+    if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(v).then(done,fail); else fail();
+  });
+  if(sk.contactImg){var co=$('contact-obj');co.onload=function(){co.hidden=false;};co.src=sk.contactImg;}
+  /* 푸터 */
+  $('f-name').textContent=pr.name;
+  $('f-role').textContent=(pr.en||'')+' · Menu Developer';
+  $('f-intro').textContent=pr.careerLine+'. 타르트 · 구움과자 · 쿠키를 중심으로 빵과 음료까지 만듭니다.';
+  $('f-contact').innerHTML='<li><a href="mailto:'+pr.email+'">'+pr.email+'</a><button type="button" class="copy" data-copy="'+pr.email+'" aria-label="이메일 주소 복사">복사</button></li>'+
+    (pr.phone?'<li><a href="tel:'+(pr.phone||'').replace(/[^0-9+]/g,'')+'">'+pr.phone+'</a><button type="button" class="copy" data-copy="'+pr.phone+'" aria-label="전화번호 복사">복사</button></li>':'');
+  $('f-slogan').textContent='제철 재료로, 다시 찾게 되는 디저트를 만듭니다.';
+  $('f-mark').textContent=(pr.en||'').toLowerCase().replace(/\b\w/g,function(c){return c.toUpperCase();});
+  $('f-copy').textContent='© '+(pr.year||'')+' '+(pr.en||'')+' · Menu Development Portfolio';
+
+  bindFallbacks();
+
+  /* 하단 플로팅 탭: KV를 지나면 나타나고, 지금 보는 섹션을 표시 */
+  var bar=$('tabbar'), kvEl=document.querySelector('.kv');
+  var topBtn=$('toTop');
+  topBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var cue=$('kvCue');
+  cue.addEventListener('click',function(){$('about').scrollIntoView({behavior:'smooth'});});
+  /* 조금만 스크롤해도 하단 탭 · TOP 버튼이 나오고, 스크롤 유도는 사라짐 */
+  function onScroll(){var y=window.scrollY, on=y>120;bar.classList.toggle('show',on);topBtn.classList.toggle('show',y>kvEl.offsetHeight*.6);cue.classList.toggle('away',y>40);}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  /* 활성 탭: 스크롤 위치로 한 번만 판단하고, 알약 표시를 미끄러지듯 이동 */
+  var links=[].slice.call(bar.querySelectorAll('a')), ind=$('tabInd'), current=null;
+  var targets=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  function moveInd(a){
+    if(!a){ind.classList.remove('on');return;}
+    /* 처음 나타날 때는 제자리에서 바로 켜지고, 그다음부터 미끄러짐 */
+    if(!ind.dataset.ready){ind.style.transition='none';void ind.offsetWidth;setTimeout(function(){ind.style.transition='';},60);ind.dataset.ready='1';}
+    ind.style.width=a.offsetWidth+'px';
+    ind.style.transform='translateX('+a.offsetLeft+'px)';
+    ind.classList.add('on');
+    if(bar.scrollWidth>bar.clientWidth)bar.scrollTo({left:a.offsetLeft-bar.clientWidth/2+a.offsetWidth/2,behavior:'smooth'});
+  }
+  function pick(){
+    var line=innerHeight*.45, idx=-1;
+    targets.forEach(function(t,i){if(t&&t.getBoundingClientRect().top<=line)idx=i;});
+    var a=links[idx]||null;
+    if(a===current)return;
+    current=a;
+    links.forEach(function(l){l.classList.toggle('on',l===a);l.toggleAttribute('aria-current',l===a);});
+    moveInd(a);
+  }
+  addEventListener('scroll',pick,{passive:true});
+  addEventListener('resize',function(){if(current)moveInd(current);});
+  pick();
+})();
+</script>
+</body></html>
