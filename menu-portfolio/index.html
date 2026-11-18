@@ -396,13 +396,19 @@
   .c-big{margin-top:44px;font-size:calc(54 * var(--u));letter-spacing:-.06em}   /* 위 메일 버튼과 크루아상 사이 여유 */
   .c-big .ind{margin-left:.7em}
   .c-obj{top:-20%;right:-5%;width:38%}   /* 휴대폰: 오른쪽으로 살짝 걸치되 화면 끝(여백 20px) 안에서 끝나게 */
-  .c-head{flex-direction:column;align-items:stretch}
+  /* 휴대폰: 제목 → 큰 영문 인사 → 연락처 → 메일 버튼(맨 아래, 280px 가운데) 순서 */
+  .contact{display:flex;flex-direction:column}
+  .c-head{display:contents}
+  .c-title{order:1}
+  .c-big{order:2}
+  .c-foot{order:3}
+  .contact #cta2{order:4;margin-top:28px;justify-content:center}
   .c-foot{margin-top:32px;max-width:none}
   .c-list>div{grid-template-columns:64px 1fr;gap:10px;padding:16px 0}
   .c-list dt{font-size:11px}
   .c-list dd a{font-size:clamp(15px, calc(16 * var(--u)), 18px)}
   .c-list .copy{height:30px;padding:0 11px;font-size:12px}
-  .contact .cta .btn{flex:1;justify-content:center}
+  .contact .cta .btn{flex:none;width:280px;max-width:100%;justify-content:center}
 }
 </style></head><body>
 
